@@ -3,7 +3,7 @@ Rindow Neural networks
 
 Hello there!
 ------------
-
+ 
 The Rindow Neural networks is a high-level neural networks library for deep learning.
 
 The goal is to be able to describe a network model in PHP as well as Python
@@ -31,9 +31,9 @@ Rindow Neural networks usually work with:
 Why do deep learning with PHP?
 ------------------------------
 
-> "If you do deep learning, you should use Python."
-> "You can't study Python anyway."
-> "Isn't Python an excellent Deep learning framework?"
+> - "If you do deep learning, you should use Python."
+> - "You can't study Python anyway."
+> - "Isn't Python an excellent Deep learning framework?"
 
 What you say is right.
 
