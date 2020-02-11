@@ -45,3 +45,46 @@ $model->add($nn->layers()->Dense(128,['input_shape'=>[784]]));
 
 Compilation
 -----------
+Before training a model, you need to configure the learning process, which is done via the compile method. It receives three options:
+
+- An optimizer. This could be an instance of the Optimizer. The default is "SGD". see Optimizers
+- An loss function. This is the objective that the model will try to minimize. It can be an instance of loss function. The default is "SparseCategoricalCrossEntropy". See Losses.
+- A list of metrics. Specify a list of strings of items to be written to the history of training. Currently, only "accuracy" and "loss" can be specified.
+
+```PHP
+# For Adam,MeanSquaredError
+$model->compile([
+    'optimizer'=>$nn->optimizers()->Adam(),
+    'loss'=>$nn->Losses()->MeanSquaredError(),
+    'metrics'=>['accuracy','loss'],
+]);
+# For Defaults: SparseCategoricalCrossEntropy, SGD
+$model->compile();
+```
+
+Training
+--------
+Keras models are trained on Numpy arrays of input data and labels. For training a model, you will typically use the fit function.
+
+```PHP
+# For 10 class categorical classification model
+$model = $nn->models()->Sequential([
+    $nn->layers()->Dense(128,
+        ['input_shape'=>[100],'kernel_initializer'=>'relu_normal']),
+    $nn->layers()->Relu(),
+    $nn->layers()->Dense(10),
+    $nn->layers()->Sigmoid(),
+]);
+$model->compile([
+    'optimizer'=>$nn->optimizers()->Adam(),
+    #'loss'=> 'SparseCategoricalCrossEntropy'  <==== default
+    'metrics'=>['accuracy'],
+]);
+# Dummy data
+$data = $mo->random()->rand([1000, 100]);
+$labels = $mo->random()->choice(10,1000);
+# Train the model
+$model->fit($train_img,$train_label,[
+        'epochs'=10,'batch_size'=>32,
+]);
+```
