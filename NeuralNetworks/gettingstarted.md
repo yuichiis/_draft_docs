@@ -55,7 +55,7 @@ Before training a model, you need to configure the learning process, which is do
 # For Adam,MeanSquaredError
 $model->compile([
     'optimizer'=>$nn->optimizers()->Adam(),
-    'loss'=>$nn->Losses()->MeanSquaredError(),
+    'loss'=>$nn->losses()->MeanSquaredError(),
     'metrics'=>['accuracy','loss'],
 ]);
 # For Defaults: SparseCategoricalCrossEntropy, SGD
@@ -64,27 +64,57 @@ $model->compile();
 
 Training
 --------
-Keras models are trained on Numpy arrays of input data and labels. For training a model, you will typically use the fit function.
+The models are trained on the NDArray of input data and labels. For training a model, you will typically use the fit method.
 
 ```PHP
-# For 10 class categorical classification model
+# classification model with 3 classes
 $model = $nn->models()->Sequential([
     $nn->layers()->Dense(128,
-        ['input_shape'=>[100],'kernel_initializer'=>'relu_normal']),
+        ['input_shape'=>[3],'kernel_initializer'=>'relu_normal']),
     $nn->layers()->Relu(),
-    $nn->layers()->Dense(10),
-    $nn->layers()->Sigmoid(),
+    $nn->layers()->Dense(3),
+    $nn->layers()->Softmax(),
 ]);
 $model->compile([
     'optimizer'=>$nn->optimizers()->Adam(),
-    #'loss'=> 'SparseCategoricalCrossEntropy'  <==== default
-    'metrics'=>['accuracy'],
+    #'loss'=>$nn->losses()->SparseCategoricalCrossEntropy(), <<== default
+    'metrics'=>['accuracy','loss'],
 ]);
-# Dummy data
-$data = $mo->random()->rand([1000, 100]);
-$labels = $mo->random()->choice(10,1000);
+# Binary Classification sample data
+use Interop\Polite\Math\Matrix\NDArray;
+$data = $mo->asType($mo->random()->choice(10,300)->reshape([100,3]),NDArray::float32);
+$labels = $mo->argMax($data,$axis=1);
 # Train the model
-$model->fit($train_img,$train_label,[
-        'epochs'=10,'batch_size'=>32,
+$history = $model->fit($data,$labels,[
+        'epochs'=>10,'batch_size'=>8,'verbose'=>1,
 ]);
+```
+
+Survey
+------
+Using the "$history", which is the return value of the model,
+you can survey the training history by graphing it.
+
+```PHP
+$plt = new Rindow\Math\Plot\Plot(null,$mo);
+[$fig,$ax] = $plt->subplots(1,2);
+$ax[0]->plot($mo->array($history['loss']),null,null,'loss');
+$ax[1]->plot($mo->array($history['accuracy']),null,null,'accuracy');
+$ax[0]->legend();
+$ax[0]->setTitle('Loss function');
+$ax[1]->legend();
+$ax[1]->setTitle('Learning curve');
+$plt->show();
+```
+
+Prediction
+----------
+Predict data using the "predict" method of the trained model.
+
+```PHP
+$predicts = $model->predict($mo->array([[2,7,1]]));
+
+$plt->bar(['#0','#1','#2'],$predicts[0],null,null,'probability');
+$plt->title('Maximum value prediction');
+$plt->show();
 ```
