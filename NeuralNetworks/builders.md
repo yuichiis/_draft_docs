@@ -6,12 +6,12 @@ When you use it on Rindow framework in the future, you can incorporate it into "
 The builder is divided into seven parts.
 
 - NeuralNetworks: The root of the builder. From here we also generate other builders.
-- Models: Generate the model. Generate a new model or generate a model instance from a saved model.
-- Layers: Generate a layer. You can generate connection nodes and activation functions as layers and add them to the model.
-- Losses: Generate a loss function for your model usage.
-- Optimizers: Generate an optimizer according to the nature of the model.
-- Datasets: Generate a dataset that downloads sample data and makes it available in the library.
-- Utils: Generate various utilities.
+- Models: Create a new model or generate a model instance from a saved model.
+- Layers: Create a layer. You can generate connection nodes and activation functions as layers and add them to the model.
+- Losses: Create a loss function for your model usage.
+- Optimizers: Create an optimizer according to the nature of the model.
+- Datasets: Create a dataset that downloads sample data and makes it available in the library.
+- Utils: Create various utilitiy instances.
 
 
 Root Builder
