@@ -73,9 +73,7 @@ $model = $nn->models()->loadModel(__DIR__.'/mnist_model.model');
 ```
 
 ```PHP
-$model = $nn->models()->loadModel(__DIR__.'/mnist_model.model');
-```
-
-```PHP
-$model = $loader->modelFromConfig($config);
+$mo = new MatrixOperator();
+$nn = new NeuralNetworks($mo);
+$model = $nn->models()->modelFromConfig($config);
 ```
