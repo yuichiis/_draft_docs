@@ -80,7 +80,7 @@ $model->compile([
     #'loss'=>$nn->losses()->SparseCategoricalCrossEntropy(), <<== default
     'metrics'=>['accuracy','loss'],
 ]);
-# Binary Classification sample data
+# Classification sample data
 use Interop\Polite\Math\Matrix\NDArray;
 $data = $mo->asType($mo->random()->choice(10,300)->reshape([100,3]),NDArray::float32);
 $labels = $mo->argMax($data,$axis=1);
