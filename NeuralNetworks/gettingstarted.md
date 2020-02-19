@@ -20,7 +20,7 @@ $model = $nn->models()->Sequential([
 ]);
 ```
 
-You can also simply add layers via the .add() method:
+You can also simply add layers via the add() method:
 
 ```PHP
 $model = $nn->models()->Sequential();
@@ -58,6 +58,8 @@ $model->compile([
     'loss'=>$nn->losses()->MeanSquaredError(),
     'metrics'=>['accuracy','loss'],
 ]);
+```
+```PHP
 # For Defaults: SparseCategoricalCrossEntropy, SGD
 $model->compile();
 ```

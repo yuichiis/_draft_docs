@@ -21,7 +21,7 @@ return $model
 ```
 Create the new Sequential model instance.
 
-See the constructor of the "Sequential".
+See the constructor of the ["Sequential"](sequential).
 
 ### loadModel
 

@@ -46,7 +46,7 @@ The builder is a singleton.
 ### losses
 ```PHP
 public function losses()
-return $layers
+return $losses
 ```
 Get losses subclass builder Rindow\NeuralNetworks\Builder\Losses.
 The builder is a singleton.
