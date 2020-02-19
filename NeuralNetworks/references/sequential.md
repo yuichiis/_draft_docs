@@ -93,7 +93,7 @@ $model->compile();
 
 ### fit
 ```PHP
-$history = $model->fit(
+public function fit(
         NDArray $inputs,
         NDArray $tests,
         array $options=[
@@ -183,6 +183,13 @@ Returns
 - **loss**: test loss
 - **accuracy**: test accuracy
 
+Examples
+
+```PHP
+[$loss,$accuracy] = $model->evaluate($data,$labels,[
+        'batch_size'=>8,'verbose'=>1,
+]);
+```
 
 ### predict
 ```PHP
@@ -205,6 +212,12 @@ Returns
     - The prediction data is arranged in the order corresponding to the input data.
     - NDArray datasets.
 
+Examples
+
+```PHP
+$data = $mo->array([[1,2,3],[4,5,6]]);
+$predictions = $model->predict($data);
+```
 
 ### toJson
 ```PHP
@@ -218,6 +231,14 @@ and use the "modelFromConfig" method of the models builder.
 Model configuration does not include weight information.
 
 - **json**: JSON string
+
+Examples
+
+```PHP
+$json = $model->toJson();
+file_put_contents(__DIR__.'/../data/sample.json',$json);
+```
+
 
 ### saveWeights
 ```PHP
@@ -234,6 +255,14 @@ Saves all layer weights.
     - **true**: Save in a hardware-independent format. However, the conversion takes time and the weight information has an error due to the conversion.
     - **false**:Save in a hardware-dependent format. You can save at high speed.
 
+Examples
+
+```PHP
+$modelWeights = [];
+$model->saveWeights(
+    $modelWeights, $portable=true);
+```
+
 ### loadWeights
 ```PHP
 public function loadWeights(
@@ -243,6 +272,12 @@ public function loadWeights(
 Load the weight information saved by saveWeights into the model.
 
 - **modelWeights**: model weights container
+
+Examples
+
+```PHP
+$model->loadWeights($modelWeights);
+```
 
 ### save
 ```PHP
@@ -257,4 +292,11 @@ To load a model from a saved file, use the "loadModel" method of the models buil
     - Specify the save destination file name.
 - **portable**: Save mode.
     - **true**: Save in a hardware-independent format. However, the conversion takes time and the weight information has an error due to the conversion.
-    - **false**:Save in a hardware-dependent format. You can save at high speed.
+    - **false**: Save in a hardware-dependent format. You can save at high speed.
+]
+
+Examples
+
+```PHP
+$model->save(__DIR__.'../data/sample.model');
+```
