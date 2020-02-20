@@ -1,7 +1,7 @@
 Sequential
 ==========
 
-- **namespace**: Rindow\NeuralNetworks\Builder
+- **namespace**: Rindow\NeuralNetworks\Model
 - **classname**: Sequential
 
 The Sequential model is a linear stack of layers.
@@ -25,10 +25,10 @@ Examples
 
 ```PHP
 $model = $nn->models()->Sequential([
-    $dense   = $nn->layers()->Dense(128,['input_shape'=>[10]]);
-    $softmax = $nn->layers()->Sigmoid();
-    $dense   = $nn->layers()->Dense(1);
-    $softmax = $nn->layers()->Sigmoid();
+    $nn->layers()->Dense(128,['input_shape'=>[10]]),
+    $nn->layers()->Sigmoid(),
+    $nn->layers()->Dense(1),
+    $nn->layers()->Sigmoid(),
 ]);
 ```
 
@@ -135,6 +135,11 @@ Several options can be specified.
     - Boolean whether to shuffle the training data before each epoch
     - The default is true.
 
+Returns
+
+- **history**: metrics history
+    - Array with key as metrics name which is the list of float values.
+
 Examples
 
 ```PHP
@@ -144,6 +149,8 @@ $history = $model->fit($data,$labels,[
         'validation_data'=>[$inputs_val, $tests_val],
         'shuffle'=>true,
 ]);
+$loss = $mo->array($history['loss']);
+$accuracy = $mo->array($history['accuracy']);
 ```
 
 ### evaluate
