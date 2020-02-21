@@ -44,9 +44,9 @@ Options
 Examples
 
 ```PHP
-$layer = $nn->layers()->Dense(128,[
+$model->add($nn->layers()->Dense(128,[
     'input_shape'=>[10],
     'kernel_initializer'=>'relu_normal',
     'bias_initializer'=>'zeros',
-]);
+]));
 ```

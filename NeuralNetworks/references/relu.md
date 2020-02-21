@@ -18,5 +18,5 @@ You can create a Relu layer instances with the Layer Builder.
 Examples
 
 ```PHP
-$layer = $nn->layers()->Relu()
+$model->add($nn->layers()->Relu());
 ```

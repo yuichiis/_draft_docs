@@ -18,5 +18,5 @@ You can create a Softmax layer instances with the Layer Builder.
 Examples
 
 ```PHP
-$layer = $nn->layers()->Softmax()
+$model->add($nn->layers()->Softmax());
 ```

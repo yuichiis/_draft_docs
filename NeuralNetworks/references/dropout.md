@@ -25,5 +25,5 @@ Arguments
 Examples
 
 ```PHP
-$layer = $nn->layers()->Dropout(0.15);
+$model->add($nn->layers()->Dropout(0.15));
 ```

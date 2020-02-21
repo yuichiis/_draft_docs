@@ -18,5 +18,5 @@ You can create a Sigmoid layer instances with the Layer Builder.
 Examples
 
 ```PHP
-$layer = $nn->layers()->Sigmoid()
+$model->add($nn->layers()->Sigmoid());
 ```
