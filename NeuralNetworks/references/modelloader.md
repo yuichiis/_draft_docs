@@ -5,7 +5,7 @@ ModelLoader
 - **classname**: ModelLoader
 
 Instantiates a model from saved model informations.
-ModelLoader is implicitly instantiated by the builder and called directly from the builder method. see [models builder](models)
+ModelLoader is implicitly instantiated by the builder and called directly from the builder method. see [models builder](models.html)
 
 Methods
 -------
