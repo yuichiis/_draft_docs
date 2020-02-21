@@ -11,6 +11,17 @@ Create new layer instances.
 Create an instance of each layer by calling method with the same name as the class name of the layer.
 Refer to the constructor of each layer for details.
 
+Layers
+------
+
+- [**Dense**](dense.html): Regular densely-connected Neural Networks layer.
+- [**Relu**](relu.html): Rectified Linear Unit activation function.
+- [**Sigmoid**](sigmoid.html): Sigmoid activation function.
+- [**Softmax**](softmax.html): Softmax activation function.
+- [**Dropout**](dropout.html): Applies Dropout to the input.
+- [**BatchNormalization**](batchnormalization.html): Normalize the previous activation function layer at each batch.
+
+
 Examples
 --------
 

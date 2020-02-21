@@ -44,12 +44,12 @@ Options
 Examples
 
 ```PHP
-$layer = $nn->layers()->BatchNormalization([
+$model->add($nn->layers()->BatchNormalization([
     'momentum'=>0.99,
     'epsilon'=>0.001,
     'beta_initializer'=>'zeros',
     'gamma_initializer'=>'ones',
     'moving_mean_initializer'=>'zeros',
     'moving_variance_initializer'=>'ones',
-]);
+]));
 ```
