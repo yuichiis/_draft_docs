@@ -1,5 +1,10 @@
-SparseCategoricalCrossEntropy
-=======================
+---
+layout: document
+title: "SparseCategoricalCrossEntropy"
+upper_section: references
+previous_section: categoricalcrossentropy
+next_section: sgd
+---
 
 - **namespace**: Rindow\NeuralNetworks\Losses
 - **classname**: SparseCategoricalCrossEntropy
@@ -15,14 +20,14 @@ Methods
 -------
 
 ### constructor
-```PHP
+```php
 $builer->SparseCategoricalCrossEntropy()
 ```
 You can create a SparseCategoricalCrossEntropy loss function instances with the Losses Builder.
 
 Examples
 
-```PHP
+```php
 $model->compile([
     'loss'=>$nn->losses()->SparseCategoricalCrossEntropy(),
 ]);

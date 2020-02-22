@@ -1,5 +1,10 @@
-BinaryCrossEntropy
-==================
+---
+layout: document
+title: "BinaryCrossEntropy"
+upper_section: references
+previous_section: meansquarederror
+next_section: categoricalcrossentropy
+---
 
 - **namespace**: Rindow\NeuralNetworks\Losses
 - **classname**: BinaryCrossEntropy
@@ -12,14 +17,14 @@ Methods
 -------
 
 ### constructor
-```PHP
+```php
 $builer->BinaryCrossEntropy()
 ```
 You can create a BinaryCrossEntropy loss function instances with the Losses Builder.
 
 Examples
 
-```PHP
+```php
 $model->compile([
     'loss'=>$nn->losses()->BinaryCrossEntropy(),
 ]);

@@ -11,7 +11,7 @@ Methods
 -------
 
 ### constructor
-```PHP
+```php
 $builer->mnist()
 return $mnist
 ```
@@ -19,7 +19,7 @@ You can create a Mnist dataset instances with the Dataset Builder.
 
 
 ### loadData
-```PHP
+```php
 public function loadData(string $filePath=null)
 return [[$train_images, $train_labels],
         [$test_images,  $test_labels ]];
@@ -34,7 +34,7 @@ Arguments:
 
 Examples
 
-```PHP
+```php
 $mnist = $nn->datasets()->mnist();
 [[$train_images, $train_labels],
  [$test_images,  $test_labels ]] = $mnist->loadData(__DIR__.'/../data/mnist');

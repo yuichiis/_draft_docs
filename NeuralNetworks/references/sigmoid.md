@@ -1,5 +1,10 @@
-Sigmoid
-=======
+---
+layout: document
+title: "Sigmoid"
+upper_section: references
+previous_section: relu
+next_section: softmax
+---
 
 - **namespace**: Rindow\NeuralNetworks\Layer
 - **classname**: Sigmoid
@@ -10,13 +15,13 @@ Methods
 -------
 
 ### constructor
-```PHP
+```php
 $builer->Sigmoid()
 ```
 You can create a Sigmoid layer instances with the Layer Builder.
 
 Examples
 
-```PHP
+```php
 $model->add($nn->layers()->Sigmoid());
 ```

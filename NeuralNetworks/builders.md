@@ -1,5 +1,9 @@
-Builders
-========
+---
+layout: document
+title: "Builders"
+upper_section: home
+previous_section: gettingstarted
+---
 The instance of each PHP class is created using builder. This is to allow replacement as a module.
 When you use it on Rindow framework in the future, you can incorporate it into "Inversion of Control".
 
@@ -18,7 +22,7 @@ Root Builder
 ------------
 First, create it using the "new" operator of the root Builder. At this time, give Rindow's MatrixOperator. After this, it can be shared with MatrixOperator which operates NDArray type data. If not given, create a new own MatrixOperator internally.
 
-```PHP
+```php
 use Rindow\Math\Matrix\MatrixOperator;
 use Rindow\NeuralNetworks\Builder\NeuralNetworks;
 
@@ -35,7 +39,7 @@ so no matter how many times you call it, only one instance is created.
 
 Each builder can specify constructors arguments when instantiating the target.
 
-```PHP
+```php
 $dense   = $nn->layers()->Dense(128,['input_shape'=>[10]]);
 $softmax = $nn->layers()->Softmax();
 $bce     = $nn->losses()->BinaryCrossEntropy();

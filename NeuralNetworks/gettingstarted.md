@@ -1,5 +1,10 @@
-Getting started
-===============
+---
+layout: document
+title: "Getting started"
+upper_section: home
+previous_section: home
+next_section: builders
+---
 
 Getting started with the Sequential model
 -----------------------------------------
@@ -8,7 +13,7 @@ The Sequential model is a linear stack of layers.
 
 You can create a Sequential model by passing a list of layer instances with the Builder:
 
-```PHP
+```php
 $mo = new Rindow\Math\Matrix\MatrixOperator();
 $nn = new Rindow\NeuralNetworks\Builder\NeuralNetworks($mo);
 
@@ -22,7 +27,7 @@ $model = $nn->models()->Sequential([
 
 You can also simply add layers via the add() method:
 
-```PHP
+```php
 $model = $nn->models()->Sequential();
 $model->add($nn->layers()->Dense(128,['input_shape'=>[784]]));
 $model->add($nn->layers()->Sigmoid());
@@ -38,7 +43,7 @@ Pass an input_shape argument to the first layer. This is a shape array of intege
 
 As such, the following snippets are strictly equivalent:
 
-```PHP
+```php
 $model = $nn->models()->Sequential();
 $model->add($nn->layers()->Dense(128,['input_shape'=>[784]]));
 ```
@@ -51,7 +56,7 @@ Before training a model, you need to configure the learning process, which is do
 - An loss function. This is the objective that the model will try to minimize. It can be an instance of loss function. The default is "SparseCategoricalCrossEntropy". See Losses.
 - A list of metrics. Specify a list of strings of items to be written to the history of training. Currently, only "accuracy" and "loss" can be specified.
 
-```PHP
+```php
 # For Adam,MeanSquaredError
 $model->compile([
     'optimizer'=>$nn->optimizers()->Adam(),
@@ -59,7 +64,7 @@ $model->compile([
     'metrics'=>['accuracy','loss'],
 ]);
 ```
-```PHP
+```php
 # For Defaults: SparseCategoricalCrossEntropy, SGD
 $model->compile();
 ```
@@ -68,7 +73,7 @@ Training
 --------
 The models are trained on the NDArray of input data and labels. For training a model, you will typically use the fit method.
 
-```PHP
+```php
 # classification model with 3 classes
 $model = $nn->models()->Sequential([
     $nn->layers()->Dense(128,
@@ -97,7 +102,7 @@ Survey
 Using the "$history", which is the return value of the model,
 you can survey the training history by graphing it.
 
-```PHP
+```php
 $plt = new Rindow\Math\Plot\Plot(null,$mo);
 [$fig,$ax] = $plt->subplots(1,2);
 $ax[0]->plot($mo->array($history['loss']),null,null,'loss');
@@ -113,7 +118,7 @@ Prediction
 ----------
 Predict data using the "predict" method of the trained model.
 
-```PHP
+```php
 $predicts = $model->predict($mo->array([[2,7,1]]));
 
 $plt->bar(['#0','#1','#2'],$predicts[0],null,null,'probability');

@@ -1,5 +1,10 @@
-MeanSquaredError
-================
+---
+layout: document
+title: "MeanSquaredError"
+upper_section: references
+previous_section: batchnormalization
+next_section: binarycrossentropy
+---
 
 - **namespace**: Rindow\NeuralNetworks\Losses
 - **classname**: MeanSquaredError
@@ -12,14 +17,14 @@ Methods
 -------
 
 ### constructor
-```PHP
+```php
 $builer->MeanSquaredError()
 ```
 You can create a MeanSquaredError loss function instances with the Losses Builder.
 
 Examples
 
-```PHP
+```php
 $model->compile([
     'loss'=>$nn->losses()->MeanSquaredError(),
 ]);

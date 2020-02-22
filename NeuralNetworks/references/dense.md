@@ -1,5 +1,10 @@
-Dense
-=====
+---
+layout: document
+title: "Dense"
+upper_section: references
+previous_section: modelloader
+next_section: relu
+---
 
 - **namespace**: Rindow\NeuralNetworks\Layer
 - **classname**: Dense
@@ -15,7 +20,7 @@ Methods
 -------
 
 ### constructor
-```PHP
+```php
 $builer->Dense(
     int $units,
     array $options=[
@@ -43,7 +48,7 @@ Options
 
 Examples
 
-```PHP
+```php
 $model->add($nn->layers()->Dense(128,[
     'input_shape'=>[10],
     'kernel_initializer'=>'relu_normal',

@@ -1,5 +1,10 @@
-SGD
-===
+---
+layout: document
+title: "SGD"
+upper_section: references
+previous_section: sparsecategoricalcrossentropy
+next_section: adam
+---
 
 - **namespace**: Rindow\NeuralNetworks\Optimizer
 - **classname**: SGD
@@ -10,7 +15,7 @@ Methods
 -------
 
 ### constructor
-```PHP
+```php
 $builer->SGD(
     array $options=[
         'lr'=>0.01,
@@ -27,7 +32,7 @@ Options
 
 Examples
 
-```PHP
+```php
 $model->compile([
     $nn->optimizers()->SGD(['lr'=>0.01]),
 ]);

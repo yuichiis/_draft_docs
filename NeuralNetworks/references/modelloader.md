@@ -1,5 +1,10 @@
-ModelLoader
-===========
+---
+layout: document
+title: "ModelLoader"
+upper_section: references
+previous_section: sequential
+next_section: dense
+---
 
 - **namespace**: Rindow\NeuralNetworks\Model
 - **classname**: ModelLoader
@@ -11,7 +16,7 @@ Methods
 -------
 
 ### modelFromConfig
-```PHP
+```php
 public function modelFromConfig(
     $config
 )
@@ -30,12 +35,12 @@ Returns
 
 Examples
 
-```PHP
+```php
 $model = $nn->models()->modelFromConfig($config);
 ```
 
 ### loadModel
-```PHP
+```php
 public function loadModel(
     $filepath
 )
@@ -53,6 +58,6 @@ Returns
 
 Examples
 
-```PHP
+```php
 $model = $nn->models()->loadModel(__DIR__.'/../data/samples.model');
 ```

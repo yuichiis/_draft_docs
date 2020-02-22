@@ -1,10 +1,16 @@
-NeuralNetworks
-==============
+---
+layout: document
+title: "NeuralNetworks"
+grand_upper_section: home
+upper_section: references
+previous_section: tableofconents
+next_section: models
+---
 Overview
 -------
 
-- namespace: Rindow\NeuralNetworks\Builder
-- classname: NeuralNetworks
+- **namespace**: Rindow\NeuralNetworks\Builder
+- **classname**: NeuralNetworks
 
 The instance of each PHP class is created using builders.
 This builder is the root builder and creates other subclass builders.
@@ -14,7 +20,7 @@ Methods
 
 ### constructor
 
-```PHP
+```php
 public function __construct(
     $matrixOperator=null,
     $backend=null
@@ -28,7 +34,7 @@ If omitted, Rindow\NeuralNetworks\Backend\RindowBlas\Backend will be created int
 
 
 ### models
-```PHP
+```php
 public function models()
 return $models
 ```
@@ -36,7 +42,7 @@ Get models subclass builder Rindow\NeuralNetworks\Builder\Models.
 The builder is a singleton.
 
 ### layers
-```PHP
+```php
 public function layers()
 return $layers
 ```
@@ -44,7 +50,7 @@ Get layers subclass builder Rindow\NeuralNetworks\Builder\Layers.
 The builder is a singleton.
 
 ### losses
-```PHP
+```php
 public function losses()
 return $losses
 ```
@@ -52,7 +58,7 @@ Get losses subclass builder Rindow\NeuralNetworks\Builder\Losses.
 The builder is a singleton.
 
 ### optimizers
-```PHP
+```php
 public function optimizers()
 return $optimizers
 ```
@@ -60,7 +66,7 @@ Get optimizers subclass builder Rindow\NeuralNetworks\Builder\Optimizers.
 The builder is a singleton.
 
 ### datasets
-```PHP
+```php
 public function datasets()
 return $datasets
 ```
@@ -68,7 +74,7 @@ Get datasets subclass builder Rindow\NeuralNetworks\Builder\Datasets.
 The builder is a singleton.
 
 ### utils
-```PHP
+```php
 public function utils()
 return $utils
 ```
@@ -79,7 +85,7 @@ The builder is a singleton.
 Example
 -------
 
-```PHP
+```php
 use Rindow\Math\Matrix\MatrixOperator;
 use Rindow\NeuralNetworks\Builder\NeuralNetworks;
 

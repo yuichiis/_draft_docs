@@ -1,5 +1,10 @@
-Dropout
-=======
+---
+layout: document
+title: "Dropout"
+upper_section: references
+previous_section: softmax
+next_section: batchnormalization
+---
 
 - **namespace**: Rindow\NeuralNetworks\Layer
 - **classname**: Dropout
@@ -12,7 +17,7 @@ Methods
 -------
 
 ### constructor
-```PHP
+```php
 $builer->Dropout(float $rate)
 ```
 You can create a Dropout layer instances with the Layer Builder.
@@ -24,6 +29,6 @@ Arguments
 
 Examples
 
-```PHP
+```php
 $model->add($nn->layers()->Dropout(0.15));
 ```

@@ -1,10 +1,15 @@
-Models
-======
+---
+layout: document
+title: "Models"
+upper_section: references
+previous_section: neuralnetworks
+next_section: layers
+---
 Overview
 -------
 
-- namespace: Rindow\NeuralNetworks\Builder
-- classname: Models
+- **namespace**: Rindow\NeuralNetworks\Builder
+- **classname**: Models
 
 Create a new model or generate a model instance from a saved model.
 
@@ -13,7 +18,7 @@ Methods
 
 ### Sequential
 
-```PHP
+```php
 public function Sequential(
     array $layers=null
 )
@@ -25,7 +30,7 @@ See the constructor of the ["Sequential"](sequential).
 
 ### loadModel
 
-```PHP
+```php
 public function loadModel(
     $filepath
 )
@@ -37,7 +42,7 @@ See the loadModel method of the "ModelLoader".
 
 ### modelFromConfig
 
-```PHP
+```php
 public function modelFromConfig(
     $modelFromConfig
 )
@@ -52,7 +57,7 @@ See the loadModel method of the "ModelLoader".
 Examples
 --------
 
-```PHP
+```php
 use Rindow\Math\Matrix\MatrixOperator;
 use Rindow\NeuralNetworks\Builder\NeuralNetworks;
 
@@ -66,13 +71,13 @@ $model = $nn->models()->Sequential([
 ]);
 ```
 
-```PHP
+```php
 $mo = new MatrixOperator();
 $nn = new NeuralNetworks($mo);
 $model = $nn->models()->loadModel(__DIR__.'/mnist_model.model');
 ```
 
-```PHP
+```php
 $mo = new MatrixOperator();
 $nn = new NeuralNetworks($mo);
 $model = $nn->models()->modelFromConfig($config);

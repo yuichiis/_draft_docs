@@ -1,5 +1,10 @@
-Sequential
-==========
+---
+layout: document
+title: "Sequential"
+upper_section: references
+previous_section: datasets
+next_section: modelloader
+---
 
 - **namespace**: Rindow\NeuralNetworks\Model
 - **classname**: Sequential
@@ -10,7 +15,7 @@ Methods
 -------
 
 ### constructor
-```PHP
+```php
 $builer->Sequential(
     array<Layer> $layers=null
 )
@@ -23,7 +28,7 @@ You can create a Sequential model by passing a list of layer instances with the 
 
 Examples
 
-```PHP
+```php
 $model = $nn->models()->Sequential([
     $nn->layers()->Dense(128,['input_shape'=>[10]]),
     $nn->layers()->Sigmoid(),
@@ -33,7 +38,7 @@ $model = $nn->models()->Sequential([
 ```
 
 ### add
-```PHP
+```php
 public function add(
     Layer $layer
 ) : void
@@ -44,7 +49,7 @@ You can simply add layers via the add() method:
 
 Examples
 
-```PHP
+```php
 $model = $nn->models()->Sequential();
 $model->add($nn->layers()->Dense(128,['input_shape'=>[784]]));
 $model->add($nn->layers()->Sigmoid());
@@ -52,7 +57,7 @@ $model->add($nn->layers()->Sigmoid());
 
 
 ### compile
-```PHP
+```php
 public function compile(
     array $options=[
         'optimizer'=>'SGD',
@@ -77,7 +82,7 @@ Several options can be specified.
 Examples
 
 
-```PHP
+```php
 # For Adam,MeanSquaredError
 $model->compile([
     'optimizer'=>$nn->optimizers()->Adam(),
@@ -85,14 +90,14 @@ $model->compile([
     'metrics'=>['accuracy','loss'],
 ]);
 ```
-```PHP
+```php
 # For Defaults: SparseCategoricalCrossEntropy, SGD
 $model->compile();
 ```
 
 
 ### fit
-```PHP
+```php
 public function fit(
         NDArray $inputs,
         NDArray $tests,
@@ -142,7 +147,7 @@ Returns
 
 Examples
 
-```PHP
+```php
 # Train the model
 $history = $model->fit($data,$labels,[
         'epochs'=>10,'batch_size'=>8,'verbose'=>1,
@@ -154,7 +159,7 @@ $accuracy = $mo->array($history['accuracy']);
 ```
 
 ### evaluate
-```PHP
+```php
 public function evaluate(
     NDArray $inputs,
     NDArray $tests,
@@ -192,14 +197,14 @@ Returns
 
 Examples
 
-```PHP
+```php
 [$loss,$accuracy] = $model->evaluate($data,$labels,[
         'batch_size'=>8,'verbose'=>1,
 ]);
 ```
 
 ### predict
-```PHP
+```php
 public function predict(
     NDArray $inputs
 ) : NDArray
@@ -221,13 +226,13 @@ Returns
 
 Examples
 
-```PHP
+```php
 $data = $mo->array([[1,2,3],[4,5,6]]);
 $predictions = $model->predict($data);
 ```
 
 ### toJson
-```PHP
+```php
 public function toJson() : string
 return $json
 ```
@@ -241,14 +246,14 @@ Model configuration does not include weight information.
 
 Examples
 
-```PHP
+```php
 $json = $model->toJson();
 file_put_contents(__DIR__.'/../data/sample.json',$json);
 ```
 
 
 ### saveWeights
-```PHP
+```php
 public function saveWeights(
     &$modelWeights,
     $portable=false
@@ -264,14 +269,14 @@ Saves all layer weights.
 
 Examples
 
-```PHP
+```php
 $modelWeights = [];
 $model->saveWeights(
     $modelWeights, $portable=true);
 ```
 
 ### loadWeights
-```PHP
+```php
 public function loadWeights(
     $modelWeights
 ) : void
@@ -282,12 +287,12 @@ Load the weight information saved by saveWeights into the model.
 
 Examples
 
-```PHP
+```php
 $model->loadWeights($modelWeights);
 ```
 
 ### save
-```PHP
+```php
 public function save(
     $filepath,
     $portable=null) : void
@@ -304,6 +309,6 @@ To load a model from a saved file, use the "loadModel" method of the models buil
 
 Examples
 
-```PHP
+```php
 $model->save(__DIR__.'../data/sample.model');
 ```

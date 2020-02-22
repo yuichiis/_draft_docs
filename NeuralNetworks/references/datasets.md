@@ -18,7 +18,7 @@ Datasets
 Examples
 --------
 
-```PHP
+```php
 use Rindow\NeuralNetworks\Builder\NeuralNetworks;
 $nn = new NeuralNetworks($mo);
 $mnist = $nn->datasets()->mnist(),

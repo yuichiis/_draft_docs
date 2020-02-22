@@ -1,5 +1,10 @@
-BatchNormalization
-==================
+---
+layout: document
+title: "BatchNormalization"
+upper_section: references
+previous_section: dropout
+next_section: meansquarederror
+---
 
 - **namespace**: Rindow\NeuralNetworks\Layer
 - **classname**: BatchNormalization
@@ -12,7 +17,7 @@ Methods
 -------
 
 ### constructor
-```PHP
+```php
 $builer->BatchNormalization(
     array $options=[
         'momentum'=>0.99,
@@ -43,7 +48,7 @@ Options
 
 Examples
 
-```PHP
+```php
 $model->add($nn->layers()->BatchNormalization([
     'momentum'=>0.99,
     'epsilon'=>0.001,

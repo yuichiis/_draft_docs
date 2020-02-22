@@ -1,9 +1,12 @@
-Rindow Neural networks
-======================
+---
+layout: document
+title: "Rindow Neural networks"
+next_section: gettingstarted
+---
 
 Hello there!
 ------------
- 
+
 The Rindow Neural networks is a high-level neural networks library for deep learning.
 
 The goal is to be able to describe a network model in PHP as well as Python

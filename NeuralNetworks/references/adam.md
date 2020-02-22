@@ -1,5 +1,9 @@
-Adam
-====
+---
+layout: document
+title: "Adam"
+upper_section: references
+previous_section: adam
+---
 
 - **namespace**: Rindow\NeuralNetworks\Optimizer
 - **classname**: Adam
@@ -10,7 +14,7 @@ Methods
 -------
 
 ### constructor
-```PHP
+```php
 $builer->Adam(
     array $options=[
         'lr'      => 0.001,
@@ -40,7 +44,7 @@ Options
 
 Examples
 
-```PHP
+```php
 $model->compile([
     $nn->optimizers()->Adam([
         'lr'      => 0.001,

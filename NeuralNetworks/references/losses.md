@@ -1,10 +1,15 @@
-Losses
-======
+---
+layout: document
+title: "Losses"
+upper_section: references
+previous_section: layers
+next_section: optimizers
+---
 Overview
 -------
 
-- namespace: Rindow\NeuralNetworks\Builder
-- classname: Losses
+- **namespace**: Rindow\NeuralNetworks\Builder
+- **classname**: Losses
 
 Create new loss function instances.
 
@@ -22,7 +27,7 @@ Loss functions
 Examples
 --------
 
-```PHP
+```php
 use Rindow\NeuralNetworks\Builder\NeuralNetworks;
 $nn = new NeuralNetworks($mo);
 $model->compile([

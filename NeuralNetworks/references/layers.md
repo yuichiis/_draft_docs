@@ -1,10 +1,15 @@
-Layers
-======
+---
+layout: document
+title: "Layers"
+upper_section: references
+previous_section: models
+next_section: losses
+---
 Overview
 -------
 
-- namespace: Rindow\NeuralNetworks\Builder
-- classname: Layers
+- **namespace**: Rindow\NeuralNetworks\Builder
+- **classname**: Layers
 
 Create new layer instances.
 
@@ -25,7 +30,7 @@ Layers
 Examples
 --------
 
-```PHP
+```php
 use Rindow\Math\Matrix\MatrixOperator;
 use Rindow\NeuralNetworks\Builder\NeuralNetworks;
 

@@ -1,10 +1,15 @@
-Optimizers
-==========
+---
+layout: document
+title: "Optimizers"
+upper_section: references
+previous_section: losses
+next_section: datasets
+---
 Overview
 -------
 
-- namespace: Rindow\NeuralNetworks\Builder
-- classname: Optimizers
+- **namespace**: Rindow\NeuralNetworks\Builder
+- **classname**: Optimizers
 
 Create new optimizer instances.
 
@@ -20,7 +25,7 @@ Optimizers
 Examples
 --------
 
-```PHP
+```php
 use Rindow\NeuralNetworks\Builder\NeuralNetworks;
 $nn = new NeuralNetworks($mo);
 $model->compile([
