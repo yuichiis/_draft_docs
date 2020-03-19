@@ -1,7 +1,7 @@
 ---
 layout: document
 title: "Sequential"
-grand_upper_section: home
+grand_upper_section: index
 upper_section: apitoc
 previous_section: datasets
 next_section: modelloader

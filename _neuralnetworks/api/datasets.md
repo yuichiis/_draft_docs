@@ -1,7 +1,7 @@
 ---
 layout: document
 title: "Datasets"
-grand_upper_section: home
+grand_upper_section: index
 upper_section: apitoc
 previous_section: optimizers
 next_section: sequential

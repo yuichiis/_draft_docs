@@ -1,7 +1,7 @@
 ---
 layout: document
 title: "CategoricalCrossEntropy"
-grand_upper_section: home
+grand_upper_section: index
 upper_section: apitoc
 previous_section: binarycrossentropy
 next_section: sparsecategoricalcrossentropy

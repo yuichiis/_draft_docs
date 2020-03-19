@@ -1,7 +1,7 @@
 ---
 layout: document
 title: "Losses"
-grand_upper_section: home
+grand_upper_section: index
 upper_section: apitoc
 previous_section: layers
 next_section: optimizers

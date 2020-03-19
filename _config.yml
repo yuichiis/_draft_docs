@@ -62,8 +62,8 @@ navbar:
   menu:
     - caption: "Projects"
       menu:
-        - { caption: "Neural Networks", link: "/neuralnetworks/home.html" }
-        - { caption: "Creating Web pages", link: "#"}
+        - { caption: "Neural Networks", link: "/neuralnetworks/index.html" }
+        - { caption: "Mathematics", link: "/mathematics/index.html"}
         - { caption: "Something else here", link: "#"}
         - { separator: "divider" }
         - { caption: "miscellaneous", separator: "dropdown-header" }
@@ -87,4 +87,18 @@ collections:
       primary:
         widgets:
         - { widget: search, caption: "Search" }
-        - { widget: free-area, name: menu, markdownify: true, realm: neuralnetworks }
+        - { widget: nav, name: menu, realm: neuralnetworks, caption: "Contents" }
+  mathematics:
+    title: "rindow Mathematics"
+    description: "Mathematics libraries for PHP"
+    output: true
+    #theme: default
+    #comment: true
+    #share: true
+    #lang: en
+    #navigator: disable
+    sidearea:
+      primary:
+        widgets:
+        - { widget: search, caption: "Search" }
+        - { widget: nav, name: menu, realm: mathematics, caption: "Contents" }

@@ -1,7 +1,7 @@
 ---
 layout: document
 title: "APIs"
-upper_section: home
+upper_section: index
 next_section: neuralnetworks
 ---
 

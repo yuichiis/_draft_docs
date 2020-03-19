@@ -1,7 +1,7 @@
 ---
 layout: document
 title: "Adam"
-grand_upper_section: home
+grand_upper_section: index
 upper_section: apitoc
 previous_section: adam
 next_section: mnist

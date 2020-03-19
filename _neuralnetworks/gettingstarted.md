@@ -1,7 +1,7 @@
 ---
 layout: document
 title: "Getting started"
-upper_section: home
+upper_section: index
 previous_section: home
 next_section: builders
 ---

@@ -1,11 +1,11 @@
 ### Free Area
 menu: |
-  - [Home](/neuralnetworks/home.html)
-    - [Overview](/neuralnetworks/home.html#hello-there)
-    - [Why do deep learning with PHP?](/neuralnetworks/home.html#why-do-deep-learning-with-php)
-    - [Requirements](/neuralnetworks/home.html#requirements)
-    - [Installation](/neuralnetworks/home.html#installation)
-    - [Note](/neuralnetworks/home.html#note)
+  - [Home](/neuralnetworks/index.html)
+    - [Overview](/neuralnetworks/index.html#hello-there)
+    - [Why do deep learning with PHP?](/neuralnetworks/index.html#why-do-deep-learning-with-php)
+    - [Requirements](/neuralnetworks/index.html#requirements)
+    - [Installation](/neuralnetworks/index.html#installation)
+    - [Note](/neuralnetworks/index.html#note)
   - [Getting started](/neuralnetworks/gettingstarted.html)
     - [Sequential model](/neuralnetworks/gettingstarted.html#getting-started-with-the-sequential-model)
     - [Specifying the input shape](/neuralnetworks/gettingstarted.html#specifying-the-input-shape)
