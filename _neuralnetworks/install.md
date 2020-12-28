@@ -1,39 +1,41 @@
 ---
 layout: document
-title: "Rindow NeuralNetworksインストール"
+title: "Rindow Neural Networks installation"
 ---
 
-- [動作環境](動作環境)
-- [Windowsの場合のインストール手順](Windowsの場合のインストール手順)
-- [Ubuntuの場合のインストール手順](Ubuntuの場合のインストール手順)
+[Operating environment](#Operating_environment)
+[Installation procedure for Windows](#Installation_procedure_for_Windows)
+[Installation procedure for Ubuntu](#Installation_procedure_for_Ubuntu)
 
-
-動作環境
------------------------------------------
-Rindow NeuralNetworksは以下の動作環境でテストしています。
+Operating environment
+---------------------
+Rindow Neural Networks has been tested in the following operating environment.
 
 - PHP 7.2, 7.3, 7.4
-- Windows 10
+- Windows 10 20H2
 - Ubuntu 18.04, 20.04
 - AMD CPU/APU 64bit(SSE2)
+- OpenBLAS (0.3.13 Windows-x64, 0.3.8 Ubuntu2004, 0.2.20 Ubuntu1804)
 
-Intel CPUでも動作するでしょう。
+It will also work on Intel CPUs.
 
-Windowsの場合のインストール手順
------------------------------------------
-PHPのインストール
+Installation procedure for Windows
+----------------------------------
+PHP installation
 
-Windows10では、Windows版PHPをインストールします。
+For Windows 10, install PHP for Windows.
 
-+ https://windows.php.net/download/ から PHP7.4(または7.2,7.3) x64 Thread Safe版をダウンロードしてください。
-+ お好みの場所に解凍します。
-+ php.ini-developmentをコピーしてphp.ini作成します。
-+ PHP.EXEに対する実行PATHを設定します。
-+ PHP -vでPHPが動作することを確かめてください。
++ Download the PHP7.4 (or 7.2,7.3) x64 Thread Safe version from https://windows.php.net/download/.
++ Unzip to the location of your choice.
++ Copy php.ini-development to create php.ini.
++ Set the execution PATH for PHP.EXE.
++ Make sure PHP works with PHP -v.
 
 ```shell
 C:TEMP>COPY C:\php\php74\php.ini-development C:\php\php74\php.ini
-あなたのお好みにphp.iniを編集。
+
+Edit php.ini to your liking.
+
 C:TEMP>PATH %PATH%;C:\php\php74
 C:TEMP>php -v
 PHP 7.4.13 (cli) (built: Nov 24 2020 12:43:32) ( ZTS Visual C++ 2017 x64 )
@@ -43,11 +45,11 @@ Zend Engine v3.4.0, Copyright (c) Zend Technologies
 C:TEMP>
 ```
 
-composerをインストールします。
+Install composer.
 
-+ https://getcomposer.org/download/ からcomposerをダウンロードします。
-+ composer.pharを実行PATHの設定されたディレクトリーにコピーします。
-+ 同じ場所にcomposer.batを作ります。
++ Download composer from https://getcomposer.org/download/.
++ Copy composer.phar to the directory where the execution PATH is set.
++ Create composer.bat in the same location.
 
 ```shell
 C:TEMP>COPY composer.phar C:\bin
@@ -55,26 +57,27 @@ C:TEMP>CD \bin
 C:bin>echo @php "%~dp0composer.phar" %*>composer.bat
 ```
 
-Rindow NeuralNetworksに必要なPHP拡張をインストールします。
+Install the required PHP extensions for Rindow Neural Networks.
 
-+ https://github.com/rindow/rindow-openblas/releases から最新バージョンのrindow_openblasをダウンロードして解凍します。
-+ https://github.com/xianyi/OpenBLAS/releases から対応するリリース番号のOpenBLASをダウンロードして解凍します。
-
-+ 実行パスにOpenBLASのDLLのパスを設定しします。
-+ php_rindow_openblas.dllをPHPのextディレクトリコピーします。
-+ php.iniに必要な設定をします。
-    - memory_limit = 8G
-    - extension=rindow_openblas
-    - extension=pdo_sqlite
-    - extension=gd2
-    - extension=mbstring
-    - extension=openssl
-+ PHP -mでrindow_openblasがロードされている事を確認します。
++ Download and unzip the latest version of rindow_openblas from https://github.com/rindow/rindow-openblas/releases.
++ Download and unzip OpenBLAS with the corresponding release number from https://github.com/xianyi/OpenBLAS/releases.
++ Set the OpenBLAS DLL path to the execution path.
++ Copy php_rindow_openblas.dll to PHP's ext directory.
++ Make the necessary settings in php.ini.
+     - memory_limit = 8G
+     - extension = rindow_openblas
+     - extension = pdo_sqlite
+     - extension = gd2
+     - extension = mbstring
+     - extension = openssl
++ Make sure rindow_openblas is loaded with PHP -m.
 
 ```shell
 C:TEMP>PATH %PATH%;C:\OpenBLAS\OpenBLAS-0.3.13-x64\bin
 C:TEMP>COPY php_rindow_openblas-0.1.6-7.4-ts-vc15-x64\php_rindow_openblas.dll C:\php\php-7.4.13-Win32-vc15-x64\ext
-php.iniを編集
+
+Edit php.ini
+
 C:TEMP>php -m
 [PHP Modules]
 ...
@@ -85,13 +88,13 @@ rindow_openblas
 C:TEMP>
 ```
 
-Rindow NeuralNetworksをインストールします。
+Install Rindow Neural Networks.
 
-+ あなたのプロジェクトディレクトリを作成します。
-+ composerでrindow/rindow-neuralnetworksをインストールします。
-+ グラフ表示の為にcomposerでrindow/rindow-math-plotをインストールします。
-+ サンプルを実行して動作確認します。
-+ 結果がグラフ表示されます。
++ Create your project directory.
++ Install rindow / rindow-neural networks with composer.
++ Install rindow / rindow-math-plot with composer for graph display.
++ Run the sample and check the operation.
++ The result is displayed as a graph.
 
 ```shell
 C:TEMP>MKDIR \tutorials
@@ -107,14 +110,16 @@ Epoch 4/5 ........................ - 10 sec.
  loss:0.1276 accuracy:0.9641 val_loss:0.1162 val_accuracy:0.9649
 Epoch 5/5 ........................ - 11 sec.
  loss:0.1063 accuracy:0.9703 val_loss:0.1059 val_accuracy:0.9688
-グラフ表示されます
+
+The graph is displayed
 ```
 
-Ubuntuの場合のインストール手順
------------------------------------------
-phpをインストールします。
+Installation procedure for Ubuntu
+---------------------------------
 
-+ apt コマンドでphp-cliとphp-mbstringとunzipをインストールします。
+Install php.
+
++ Install php-cli, php-mbstring, gd and unzip with the apt command.
 
 ```shell
 $ sudo apt install php-cli7.4 php7.4-mbstring php7.4-sqlite3 php7.4-gd unzip
@@ -125,11 +130,11 @@ Zend Engine v3.4.0, Copyright (c) Zend Technologies
     with Zend OPcache v7.4.3, Copyright (c), by Zend Technologies
 ```
 
-composerをインストールします。
+Install composer.
 
-+ https://getcomposer.org/download/ からcomposerをダウンロードします。
-+ composer.pharを実行PATHの設定されたディレクトリーにコピーします。
-+ 同じ場所にcomposerを作ります。
++ Download composer from https://getcomposer.org/download/.
++ Copy composer.phar to the directory where the execution PATH is set.
++ Make composer in the same place.
 
 ```shell
 $ cp composer.phar ~/.local/bin
@@ -144,12 +149,11 @@ $ composer -V
 Composer version 2.0.8 2020-12-03 17:20:38
 ```
 
+Install the required PHP extensions for Rindow Neural Networks.
 
-Rindow NeuralNetworksに必要なPHP拡張をインストールします。
-
-+ https://github.com/rindow/rindow-openblas/releases から最新バージョンのrindow_openblasをダウンロードします。
-+ ダウンロードしたdebファイルをaptコマンドでインストールします。
-+ PHP -mでrindow_openblasがロードされている事を確認します。
++ Download the latest version of rindow_openblas from https://github.com/rindow/rindow-openblas/releases.
++ Install the downloaded deb file with the apt command.
++ Make sure rindow_openblas is loaded with PHP -m.
 
 ```shell
 $ sudo apt install ./rindow-openblas-php7.4_0.2.0-1+ubuntu20.04_amd64.deb
@@ -160,14 +164,14 @@ rindow_openblas
 ...
 ```
 
-Rindow NeuralNetworksをインストールします。
+Install Rindow Neural Networks.
 
-+ rindow-math-plotの画像表示コマンドを設定します。
-+ あなたのプロジェクトディレクトリを作成します。
-+ composerでrindow/rindow-neuralnetworksをインストールします。
-+ グラフ表示の為にcomposerでrindow/rindow-math-plotをインストールします。
-+ サンプルを実行して動作確認します。
-+ 結果がグラフ表示されます。
++ Set the image display command of rindow-math-plot.
++ Create your project directory.
++ Install rindow / rindow-neural networks with composer.
++ Install rindow / rindow-math-plot with composer for graph display.
++ Run the sample and check the operation.
++ The result is displayed as a graph.
 
 ```shell
 $ RINDOW_MATH_PLOT_VIEWER=/some/bin/dir/png-file-viewer
@@ -175,6 +179,7 @@ $ export RINDOW_MATH_PLOT_VIEWER
 $ mkdir ~/tutorials
 $ cd ~/tutorials
 $ composer require rindow/rindow-neuralnetworks
+$ composer require rindow/rindow-math-plot
 $ mkdir samples
 $ cd samples
 $ cp ../vendor/rindow/rindow-neuralnetworks/samples/* .
@@ -185,5 +190,6 @@ Epoch 4/5 ........................ - 10 sec.
  loss:0.1276 accuracy:0.9641 val_loss:0.1162 val_accuracy:0.9649
 Epoch 5/5 ........................ - 11 sec.
  loss:0.1063 accuracy:0.9703 val_loss:0.1059 val_accuracy:0.9688
-結果がグラフ表示されます。
+
+The result is displayed as a graph.
 ```
