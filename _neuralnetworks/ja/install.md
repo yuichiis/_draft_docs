@@ -6,6 +6,8 @@ title: "Rindow NeuralNetworksインストール"
 - [動作環境](動作環境)
 - [Windowsの場合のインストール手順](Windowsの場合のインストール手順)
 - [Ubuntuの場合のインストール手順](Ubuntuの場合のインストール手順)
+- [GPU/OpenCL support](GPU/OpenCL support)
+
 
 
 動作環境
@@ -187,4 +189,22 @@ Epoch 4/5 ........................ - 10 sec.
 Epoch 5/5 ........................ - 11 sec.
  loss:0.1063 accuracy:0.9703 val_loss:0.1059 val_accuracy:0.9688
 結果がグラフ表示されます。
+```
+
+GPU/OpenCL support
+------------------
+
+Download binaries and setup PHP extension and libraries.
+
+- [Rindow OpenCL extension](https://github.com/rindow/rindow-opencl/releases)
+- [Rindow CLBlast extension](https://github.com/rindow/rindow-clblast/releases)
+- [CLBlast library](https://github.com/CNugteren/CLBlast/releases)
+
+Set environment variable.
+
+```shell
+C:tutorials>RINDOW_NEURALNETWORKS_BACKEND=clblast
+C:tutorials>export RINDOW_NEURALNETWORKS_BACKEND
+C:tutorials>cd samples
+C:samples>php mnist-basic-clasification.php
 ```
