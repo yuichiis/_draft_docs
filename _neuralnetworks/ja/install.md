@@ -188,8 +188,10 @@ Epoch 4/5 ........................ - 10 sec.
  loss:0.1276 accuracy:0.9641 val_loss:0.1162 val_accuracy:0.9649
 Epoch 5/5 ........................ - 11 sec.
  loss:0.1063 accuracy:0.9703 val_loss:0.1059 val_accuracy:0.9688
-結果がグラフ表示されます。
 ```
+結果がグラフ表示されます。
+
+![Result](images/gettingstarted-result.png)
 
 GPU/OpenCL support
 ------------------
