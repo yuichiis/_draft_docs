@@ -1,0 +1,39 @@
+Input:   <start> j ai besoin de soutien . <end>
+Predict: i need support . <end>
+Target:  <start> i need support . <end>
+
+Input:   <start> est ce sérieux  ? <end>
+Predict: no kidding ? <end>
+Target:  <start> is it serious ? <end>
+
+Input:   <start> magnifique  ! <end>
+Predict: wonderful ! <end>
+Target:  <start> terrific ! <end>
+
+Input:   <start> je m aime . <end>
+Predict: i like myself . <end>
+Target:  <start> i love myself . <end>
+
+Input:   <start> vous n êtes pas une sainte . <end>
+Predict: you re no saint . <end>
+Target:  <start> you re no saint . <end>
+
+Input:   <start> mille mercis . <end>
+Predict: many thanks . <end>
+Target:  <start> many thanks . <end>
+
+Input:   <start> il est poète . <end>
+Predict: he is a poet . <end>
+Target:  <start> he is a poet . <end>
+
+Input:   <start> fermez la porte ! <end>
+Predict: close the door . <end>
+Target:  <start> close the door . <end>
+
+Input:   <start> que peut on y faire ? <end>
+Predict: what do we do ? <end>
+Target:  <start> what can you do ? <end>
+
+Input:   <start> est ce vous ? <end>
+Predict: is it you ? <end>
+Target:  <start> is that you ? <end>
