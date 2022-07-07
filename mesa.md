@@ -1,3 +1,4 @@
+```
 $ sudo apt install mesa-opencl-icd
 $ sudo apt install clinfo
 $ clinfo
@@ -93,5 +94,5 @@ ICD loader properties
   ICD loader Vendor                               OCL Icd free software
   ICD loader Version                              2.2.11
   ICD loader Profile                              OpenCL 2.1
-$ sudo install opencl-c-headers
-
+$ sudo apt install ocl-icd-opencl-dev
+```
