@@ -1,5 +1,7 @@
 ```
 $ sudo apt install mesa-opencl-icd
+$ sudo mkdir -p /usr/local/usr/lib
+$ ln -s /usr/lib/clc /usr/local/usr/lib/clc
 $ sudo apt install clinfo
 $ clinfo
 Number of platforms                               1
