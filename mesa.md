@@ -29,9 +29,21 @@ Number of devices                                 1
   Max work item dimensions                        3
   Max work item sizes                             256x256x256
   Max work group size                             256
-=== CL_PROGRAM_BUILD_LOG ===
-fatal error: cannot open file '/usr/local//usr/lib/clc/cedar-r600--.bc': No such file or directory
-  Preferred work group size multiple              <getWGsizes:1200: create kernel : error -46>
+'+16-bit-insts' is not a recognized feature for this target (ignoring feature)
+'+aperture-regs' is not a recognized feature for this target (ignoring feature)
+'+cumode' is not a recognized feature for this target (ignoring feature)
+'+dot1-insts' is not a recognized feature for this target (ignoring feature)
+'+dot5-insts' is not a recognized feature for this target (ignoring feature)
+'+dpp' is not a recognized feature for this target (ignoring feature)
+'+ds-src2-insts' is not a recognized feature for this target (ignoring feature)
+'+16-bit-insts' is not a recognized feature for this target (ignoring feature)
+'+aperture-regs' is not a recognized feature for this target (ignoring feature)
+'+cumode' is not a recognized feature for this target (ignoring feature)
+'+dot1-insts' is not a recognized feature for this target (ignoring feature)
+'+dot5-insts' is not a recognized feature for this target (ignoring feature)
+'+dpp' is not a recognized feature for this target (ignoring feature)
+'+ds-src2-insts' is not a recognized feature for this target (ignoring feature)
+  Preferred work group size multiple              32
   Preferred / native vector sizes                 
     char                                                16 / 16      
     short                                                8 / 8       
