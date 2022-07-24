@@ -1,3 +1,4 @@
+```
 device(0)
     CL_DEVICE_VENDOR_ID=4098
     CL_DEVICE_NAME=Loveland
@@ -158,3 +159,4 @@ device(1)
             CL_PLATFORM_VENDOR=Advanced Micro Devices, Inc.
             CL_PLATFORM_EXTENSIONS=cl_khr_icd cl_khr_d3d10_sharing cl_khr_d3d11_sharing cl_khr_dx9_media_sharing cl_amd_event_callback cl_amd_offline_devices 
     )
+```
