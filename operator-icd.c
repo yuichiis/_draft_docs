@@ -22,10 +22,10 @@ int main()
     cl_uint ret_num_devices;
     cl_uint ret_num_platforms;
     cl_int ret;
-    cl_long a=3;
-    cl_long b=5;
+    cl_int a=3;
+    cl_int b=5;
 
-    cl_long values[MEM_SIZE];
+    cl_int values[MEM_SIZE];
 
     FILE *fp;
     char fileName[] = "./operator.cl";
@@ -142,7 +142,7 @@ int main()
     printf("\n");
     /* Display Result */
     for(int i=0;i<MEM_SIZE;i++) {
-        printf("%ld,",values[i]);
+        printf("%d,",values[i]);
     }
     printf("\n");
 
