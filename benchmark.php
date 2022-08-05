@@ -55,9 +55,19 @@ echo "sum gpu=".$times[3]."\n";
 echo "im2col2d cpu=".$times[4]."\n";
 echo "im2col2d gpu=".$times[5]."\n";
 
+// linux-mesa-clc on AMD
 // gemm cpu=336814360
 // gemm gpu=433350690
 // sum cpu=3248213
 // sum gpu=2923017
 // im2col2d cpu=251985661
 // im2col2d gpu=133678056
+
+// windows10 windows-standard-driver on AMD
+// gemm cpu=326405300
+// gemm gpu=105720300
+// sum cpu=3767300
+// sum gpu=3279800
+// im2col2d cpu=184174000
+// im2col2d gpu=51568600
+
