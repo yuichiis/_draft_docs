@@ -12,7 +12,7 @@ $mo = new MatrixOperator();
 //$mode = 'CPU-NORMAL';
 //$mode = 'CPU-RAW';
 $mode = 'GPU';
-$size = 4000;
+$size = 5000;
 $epochs = 10;
 $dtype = NDArray::float32;
 //$dtype = NDArray::float64;
@@ -31,6 +31,8 @@ switch($mode) {
         $la = $mo->laAccelerated('clblast',['deviceType'=>OpenCL::CL_DEVICE_TYPE_GPU]);
         echo "blocking mode...\n";
         $la->blocking(true);
+        //echo "non-blocking mode...\n";
+        //$la->blocking(false);
         break;
     }
     default: {
@@ -59,6 +61,8 @@ if($accel=='CPU') {
     echo "GPU device name :$name\n";
     $cu = $devices->getInfo($i,OpenCL::CL_DEVICE_MAX_COMPUTE_UNITS);
     echo "GPU Compute units :$cu\n";
+    //$wg = $devices->getInfo($i,OpenCL::CL_DEVICE_MAX_WORK_GROUP_SIZE);
+    //echo "GPU Max workgroup size :$wg\n";
 }
 
 $strdtype = $mo->dtypetostring($dtype);
@@ -71,8 +75,13 @@ $b = $mo->arange($size*$size,dtype:$dtype)->reshape([$size,$size]);
 $a = $la->array($a);
 $b = $la->array($b);
 
+// Dummy execution to compile OpenCL 
+//$c = $la->gemm($a,$b);
+//$la->finish();
+
 $start = microtime(true);
 for($i=0;$i<$epochs;$i++) {
     $c = $la->gemm($a,$b);
 }
+//$la->finish();
 echo "elapsed time:".(microtime(true)-$start)."\n";
