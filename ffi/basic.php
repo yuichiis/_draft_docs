@@ -13,6 +13,7 @@ $buf = FFI::new('float[10]');
 //$alpha->cdata = 2.0;
 //$n->cdata = 10;
 //$incx->cdata = 1;
+
 for($i=0;$i<10;$i++) {
     //$buf[$i]->cdata = $i;
     $buf[$i] = $i;
