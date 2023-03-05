@@ -2,7 +2,8 @@
 declare(strict_types=1);
 
 $ffi = FFI::load(__DIR__ . "/blas_win.h");
-
+echo get_class($ffi);
+exit();
 $buf = FFI::new('float[10]');
 var_dump(count($buf));
 

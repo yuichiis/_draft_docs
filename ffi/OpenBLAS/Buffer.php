@@ -1,25 +1,25 @@
 <?php
-namespace Rindow\Math\Matrix;
+namespace Rindow\OpenBLAS\FFI;
 
-use Interop\Polite\Math\Matrix\Buffer;
+use Interop\Polite\Math\Matrix\Buffer as BufferInterface;
 use Interop\Polite\Math\Matrix\NDArray;
 use InvalidArgumentException;
 use OutOfRangeException;
 use LogicException;
 use FFI;
 
-class FFIBuffer implements Buffer
+class Buffer implements BufferInterface
 {
     protected static $typeString = [
-        NDArray::bool    => 'unsigned char',
-        NDArray::int8    => 'char',
-        //NDArray::int16   => 'N/A',
-        NDArray::int32   => 'short',
-        NDArray::int64   => 'long',
-        NDArray::uint8   => 'unsigned char',
-        //NDArray::uint16  => 'N/A',
-        NDArray::uint32  => 'unsigned short',
-        NDArray::uint64  => 'unsigned long',
+        NDArray::bool    => 'uint8_t',
+        NDArray::int8    => 'int8_t',
+        NDArray::int16   => 'int16_t',
+        NDArray::int32   => 'int32_t',
+        NDArray::int64   => 'int64_t',
+        NDArray::uint8   => 'uint8_t',
+        NDArray::uint16  => 'uint16_t',
+        NDArray::uint32  => 'uint32_t',
+        NDArray::uint64  => 'uint64_t',
         //NDArray::float8  => 'N/A',
         //NDArray::float16 => 'N/A',
         NDArray::float32 => 'float',
@@ -28,11 +28,11 @@ class FFIBuffer implements Buffer
     protected static $valueSize = [
         NDArray::bool    => 1,
         NDArray::int8    => 1,
-        //NDArray::int16   => 'N/A',
+        NDArray::int16   => 2,
         NDArray::int32   => 4,
         NDArray::int64   => 8,
         NDArray::uint8   => 1,
-        //NDArray::uint16  => 'N/A',
+        NDArray::uint16  => 2,
         NDArray::uint32  => 4,
         NDArray::uint64  => 8,
         //NDArray::float8  => 'N/A',
@@ -63,7 +63,7 @@ class FFIBuffer implements Buffer
 
     public function value_size() : int
     {
-        return $this->valueSize[$this->dtype];
+        return $this::$valueSize[$this->dtype];
     }
 
     public function addr(int $offset) : FFI\CData
@@ -83,17 +83,11 @@ class FFIBuffer implements Buffer
 
     public function offsetGet(mixed $offset): mixed
     {
-        if($offset<0||$offset>=$this->size) {
-            throw new OutOfRangeException("Out Of Range");
-        }
         return $this->data[$offset];
     }
 
     public function offsetSet(mixed $offset, mixed $value): void
     {
-        if($offset<0||$offset>=$this->size) {
-            throw new OutOfRangeException("Out Of Range");
-        }
         $this->data[$offset] = $value;
     }
 

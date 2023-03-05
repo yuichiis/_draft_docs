@@ -16,10 +16,49 @@
 //$ffi = FFI::load($filename);
 //$ffi = FFI::scope('sdl');
 //var_dump(ZEND_THREAD_SAFE);
-$a = 'abc';
-$b = array('a','b','c');
-$j = 1;
+//$a = 'abc';
+//$b = array('a','b','c');
+//$j = 1;
 //var_dump($a{$j});
-var_dump($b{$j});
+//var_dump($b[$j]);
 
 //var_dump(phpversion('rindow_openblas'));
+
+//$str = ["abc","def"];
+//$objs = [];
+//$a = FFI::new("char*[".count($str)."]");
+//foreach($str as $i => $v) {
+//    $len = strlen($v)+1;
+//    $s = FFI::new("char[$len]");
+//    FFI::memcpy($s,$v."\0",$len);
+//    $objs[] = $s;
+//    $a[$i] = FFI::cast("char*",FFI::addr($s));
+//}
+//var_dump($a);
+
+$types = [
+    'char','short','int','long','size_t',
+    'int8_t','int32_t','int64_t',
+    'float','double','long double',
+];
+foreach ($types as $type) {
+    $bits = FFI::sizeof(FFI::type($type))*8;
+    echo "$type: $bits\n";
+}
+
+$a = FFI::new("float[2]");
+try {
+    $a[-1] = 1.0;
+} catch (\Throwable $th) {
+    echo get_class($th).": ".$th->getMessage()."\n";
+}
+
+$ffi = FFI::cdef("enum tst { ea = 1, eb = 2, };");
+$a = $ffi->new("enum tst[1]");
+echo "enum size=".(FFI::sizeof($a))."\n";
+
+var_dump(chr(0x21));
+$a = FFI::new("char");
+$a->cdata = chr(0x21);
+var_dump($a);
+
