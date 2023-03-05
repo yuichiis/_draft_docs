@@ -1,3 +1,4 @@
+#define FFI_SCOPE "Rindow\\OpenBLAS\\FFI"
 #define FFI_LIB "libopenblas.dll"
 
 /////////////////////////////////////////////

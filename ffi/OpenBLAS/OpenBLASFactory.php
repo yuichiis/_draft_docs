@@ -6,15 +6,18 @@ use Interop\Polite\Math\Matrix\Buffer as BufferInterface;
 
 class OpenBLASFactory
 {
-    protected FFI $ffi;
+    private static ?FFI $ffi = null;
 
     public function __construct(
         string $headerFile=null
         )
     {
+        if(self::$ffi!==null) {
+            return;
+        }
         $headerFile = $headerFile ?? __DIR__ . "/openblas_win.h";
         $ffi = FFI::load($headerFile);
-        $this->ffi = $ffi;
+        self::$ffi = $ffi;
     }
 
     public function Buffer(int $size, int $dtype) : Buffer
@@ -24,17 +27,17 @@ class OpenBLASFactory
 
     public function Blas() : Blas
     {
-        return new Blas($this->ffi);
+        return new Blas(self::$ffi);
     }
 
     public function Lapack() : Lapack
     {
-        return new Lapack($this->ffi);
+        return new Lapack(self::$ffi);
     }
 
     public function Math() : Math
     {
-        return new Math($this->ffi);
+        return new Math(self::$ffi);
     }
 
 }
