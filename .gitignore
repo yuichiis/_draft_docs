@@ -1,3 +1,6 @@
 a.out
 *.obj
 *.exe
+*.dll
+*.exp
+*.lib
