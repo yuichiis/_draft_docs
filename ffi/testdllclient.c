@@ -8,9 +8,18 @@ int main(int ac, char *av[])
     uint64_t y;
     int *z;
     y = testdll(&x);
-    printf("y=%lld\n",y);
+    #if _MSC_VER
+        printf("y=%lld\n",y);
+    #else
+        printf("y=%ld\n",y);
+    #endif
 
     z = returnpointer(&x);
-    printf("&x=%lld\n",(int64_t)&x);
-    printf("z=%lld\n",(int64_t)z);
+    #if _MSC_VER
+        printf("&x=%lld\n",(int64_t)&x);
+        printf("z=%lld\n",(int64_t)z);
+    #else
+        printf("&x=%ld\n",(int64_t)&x);
+        printf("z=%ld\n",(int64_t)z);
+    #endif
 }
