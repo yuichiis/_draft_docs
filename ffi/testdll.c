@@ -6,13 +6,13 @@
 
 #include "testdll.h"
 
-uint64_t testdll(int * x)
+RINDOW_FUNC uint64_t testdll(int * x)
 {
     printf("[%d]\n",*x);
     return *x;
 }
 
-int * returnpointer(int *x)
+RINDOW_FUNC int * returnpointer(int *x)
 {
     printf("pointer[%lld]\n",(int64_t)x);
     return x;

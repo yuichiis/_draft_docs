@@ -7,6 +7,19 @@
 #else
   #define PUBLIC_API __declspec(dllimport)
 #endif
+#if !defined(RINDOW_FUNC)
+  #if defined(RINDOW_COMPILING_DLL)
+    #define RINDOW_FUNC
+    #define RINDOW_FUNC_DECL extern __declspec(dllexport)
+  #elif defined(RINDOW_MATHLIB_INCLUDING_SOURCE)
+    #define RINDOW_FUNC
+    #define RINDOW_FUNC_DECL
+  #else
+    #define RINDOW_FUNC
+    #define RINDOW_FUNC_DECL extern __declspec(dllimport)
+  #endif
+#endif
+
 
 #include <stdint.h>
 
@@ -14,8 +27,8 @@
 extern "C" {
 #endif
 
-extern uint64_t PUBLIC_API testdll(int * x);
-extern PUBLIC_API int * returnpointer(int * x);
+RINDOW_FUNC_DECL uint64_t testdll(int * x);
+RINDOW_FUNC_DECL int * returnpointer(int * x);
 
 #ifdef __cplusplus
 } // extern "C"
