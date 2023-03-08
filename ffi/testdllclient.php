@@ -1,9 +1,21 @@
 <?php
 
+if(PHP_OS=='Linux') {
+    $lib = "libtestdll.so";
+} elseif(PHP_OS=='WINNT') {
+    $lib = "testdll.dll";
+}
 $ffi = FFI::cdef("
 uint64_t testdll(int * x);
 int* returnpointer(int * x);
-", "testdll.dll");
+", $lib);
+
+echo "sizeof(int)="; var_dump(FFI::sizeof(FFI::new("int")));
+echo "sizeof(long)="; var_dump(FFI::sizeof(FFI::new("long")));
+echo "sizeof(long long)="; var_dump(FFI::sizeof(FFI::new("long long")));
+echo "sizeof(size_t)="; var_dump(FFI::sizeof(FFI::new("size_t")));
+echo "sizeof(int32_t)="; var_dump(FFI::sizeof(FFI::new("int32_t")));
+echo "sizeof(int64_t)="; var_dump(FFI::sizeof(FFI::new("int64_t")));
 
 $x = $ffi->new("int[2]");
 $xx = $ffi->new("int*");
