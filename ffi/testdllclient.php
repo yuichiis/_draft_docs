@@ -43,12 +43,12 @@ while(true) {
     $var = $ffi->get_server_var();
     echo "get_server_var=";
     var_dump($var);
+    $var++;
+    echo "set_server_var($var)\n";
+    $ffi->set_server_var($var);
     echo "wait>";
     $s = fgets(STDIN);
     if(trim($s)=="exit") {
         break;
     }
-    $var++;
-    echo "set_server_var($var)\n";
-    $ffi->set_server_var($var);
 }
