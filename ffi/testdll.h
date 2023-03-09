@@ -3,11 +3,6 @@
 
 #if _MSC_VER
 
-#if defined(COMPILING_DLL)
-  #define PUBLIC_API __declspec(dllexport)
-#else
-  #define PUBLIC_API __declspec(dllimport)
-#endif
 #if !defined(RINDOW_FUNC)
   #if defined(RINDOW_COMPILING_DLL)
     #define RINDOW_FUNC
@@ -36,6 +31,8 @@ extern "C" {
 
 RINDOW_FUNC_DECL uint64_t testdll(int * x);
 RINDOW_FUNC_DECL int * returnpointer(int * x);
+RINDOW_FUNC_DECL int64_t get_server_var();
+RINDOW_FUNC_DECL void set_server_var(int64_t val);
 
 #ifdef __cplusplus
 } // extern "C"

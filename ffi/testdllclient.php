@@ -8,6 +8,8 @@ if(PHP_OS=='Linux') {
 $ffi = FFI::cdef("
 uint64_t testdll(int * x);
 int* returnpointer(int * x);
+int64_t get_server_var();
+void set_server_var(int64_t val);
 ", $lib);
 
 echo "sizeof(int)="; var_dump(FFI::sizeof(FFI::new("int")));
@@ -36,3 +38,17 @@ $x[0] = 3;
 $x[1] = 4;
 echo "zz[0]="; var_dump($zz[0]);
 echo "zz[1]="; var_dump($zz[1]);
+
+while(true) {
+    $var = $ffi->get_server_var();
+    echo "get_server_var=";
+    var_dump($var);
+    echo "wait>";
+    $s = fgets(STDIN);
+    if(trim($s)=="exit") {
+        break;
+    }
+    $var++;
+    echo "set_server_var($var)\n";
+    $ffi->set_server_var($var);
+}
