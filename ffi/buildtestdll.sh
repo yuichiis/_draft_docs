@@ -1,2 +1,2 @@
 cc -shared -fPIC -o libtestdll.so testdll.c
-cc -L./ testdllclient.c -o testdllclient -ltestdll
+cc -L./ testdllclient.c -o testdllclient.out -ltestdll
