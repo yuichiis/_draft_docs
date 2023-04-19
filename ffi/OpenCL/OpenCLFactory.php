@@ -23,10 +23,10 @@ class OpenCLFactory
     public function DeviceList(
         PlatformList $platforms,
         int $index=NULL,
-        int $device_type=NULL,
+        int $deviceType=NULL,
     ) : DeviceList
     {
-        return new DeviceList($this->ffi,$platforms,$index,$device_type);
+        return new DeviceList($this->ffi,$platforms,$index,$deviceType);
     }
 
     public function Context(
@@ -45,42 +45,42 @@ class OpenCLFactory
 
     public function CommandQueue(
         Context $context,
-        object $device_id=null,
+        object $deviceId=null,
         object $properties=null,
     ) : CommandQueue
     {
-        return new CommandQueue($this->ffi, $context, $device_id, $properties);
+        return new CommandQueue($this->ffi, $context, $deviceId, $properties);
     }
 
     public function Program(
         Context $context,
         string|array $source,   // string or list of something
         int $mode=null,         // mode  0:source codes, 1:binary, 2:built-in kernel, 3:linker
-        DeviceList $device_list=null,
+        DeviceList $deviceList=null,
         string $options=null,
         ) : Program
     {
-        return new Program($this->ffi, $context, $source, $mode, $device_list, $options);
+        return new Program($this->ffi, $context, $source, $mode, $deviceList, $options);
     }
 
     public function Buffer(
         Context $context,
         int $size,
         int $flags=null,
-        BufferInterface $host_buffer=null,
-        int $host_offset=null,
+        BufferInterface $hostBuffer=null,
+        int $hostOffset=null,
         int $dtype=null,
         ) : Buffer
     {
-        return new Buffer($this->ffi, $context, $size, $flags, $host_buffer, $host_offset, $dtype);
+        return new Buffer($this->ffi, $context, $size, $flags, $hostBuffer, $hostOffset, $dtype);
     }
 
     public function Kernel
     (
         Program $program,
-        string $kernel_name,
+        string $kernelName,
         ) : Kernel
     {
-        return new Kernel($this->ffi, $program, $kernel_name);
+        return new Kernel($this->ffi, $program, $kernelName);
     }
 }
