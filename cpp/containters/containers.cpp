@@ -12,6 +12,10 @@ void vector_sample(void)
     std::cout << "vec[2]=" << vec[2] << std::endl;
     std::cout << "vec.front()=" << vec.front() << std::endl;
     std::cout << "vec.back()=" << vec.back() << std::endl;
+    vec.at(2) = 10;
+    std::cout << "vec.at(2)=10 =" << vec.at(2) << std::endl;
+    vec[2] = 100;
+    std::cout << "vec[2]=100 =" << vec[2] << std::endl;
 
     std::cout << "for(const auto& value : vec)=";
     for(const auto& value : vec) {
@@ -42,6 +46,7 @@ void vector_sample(void)
 
     std::cout << "vec.empty()=" << vec.empty() << std::endl;
     std::vector<int> vec2 = {5,6,7,8};
+    std::cout << "vec.swap(vec2)=";
     vec.swap(vec2);
     for(const auto& value : vec) {
         std::cout << value << ",";
@@ -112,6 +117,16 @@ void vector_sample(void)
         std::cout << value << ",";
     }
     std::cout << std::endl;
+
+    std::cout << "vector<int> vec(3): ";
+    std::vector<int> vec3(3);
+    vec3[0] = 1;
+    vec3[1] = 2;
+    vec3[2] = 3;
+    for(const auto& value : vec3) {
+        std::cout << value << ",";
+    }
+    std::cout << std::endl;
 }
 
 void array_sample(void)
@@ -124,6 +139,10 @@ void array_sample(void)
     std::cout << "arr[2]=" << arr[2] << std::endl;
     std::cout << "arr.front()=" << arr.front() << std::endl;
     std::cout << "arr.back()=" << arr.back() << std::endl;
+    arr.at(2) = 10;
+    std::cout << "arr.at(2)=10 =" << arr.at(2) << std::endl;
+    arr[2] = 20;
+    std::cout << "arr[2]=20 =" << arr[2] << std::endl;
     std::cout << "for(const auto& value : arr)=";
     for(const auto& value : arr) {
         std::cout << value << ",";
@@ -153,6 +172,7 @@ void array_sample(void)
     std::cout << std::endl;
     std::cout << "arr.empty()=" << arr.empty() << std::endl;
     std::array<int,4> arr2 = {5,6,7,8};
+    std::cout << "arr.swap(arr2)=";
     arr.swap(arr2);
     for(const auto& value : arr) {
         std::cout << value << ",";
