@@ -8,20 +8,33 @@
 
 template <typename T>
 class NDArray {
-private:
+public:
+    using ndarray_t = std::shared_ptr<NDArray<T>>;
     using index_t = std::uint32_t;
     using shape_t = std::vector<index_t>;
-    shape_t shape_;
-    index_t offset_;
-    index_t size_;
-    index_t num_items_;
-    std::shared_ptr<std::vector<T>> data_;
-public:
-    static std::shared_ptr<NDArray<T>> alloc(std::initializer_list<index_t> shape)
+    static ndarray_t alloc(std::initializer_list<index_t> shape)
     {
         shape_t shape2;
         std::copy(shape.begin(), shape.end(), std::back_inserter(shape2));
         return std::make_shared<NDArray<T>>(&shape2);
+    }
+
+    static ndarray_t fill(std::initializer_list<index_t> shape, T value)
+    {
+        auto array = alloc(shape);
+        auto buffer = array->buffer();
+        std::fill(buffer->begin(), buffer->end(), value);
+        return array;
+    }
+
+    static ndarray_t zeros(std::initializer_list<index_t> shape)
+    {
+        return fill(shape,(T)0);
+    }
+
+    static ndarray_t ones(std::initializer_list<index_t> shape)
+    {
+        return fill(shape,(T)1);
     }
 
     NDArray(shape_t* shape) : NDArray(
@@ -74,7 +87,7 @@ public:
         return &(data_->data()[offset_]);
     }
 
-    std::shared_ptr<NDArray<T>> at(index_t index) {
+    ndarray_t at(index_t index) {
         if(shape_.size()==0) {
             throw std::out_of_range("Indexes cannot be applied to scalars.");
         }
@@ -138,7 +151,7 @@ public:
             return *this;
         }
 
-        const std::shared_ptr<NDArray<T>> operator*() {
+        const ndarray_t operator*() {
             auto array = my_self_->at(index_);
             return array;
         }
@@ -155,12 +168,19 @@ public:
     iterator end() {
         return iterator(this, size_);
     }
+private:
+    shape_t shape_;
+    index_t offset_;
+    index_t size_;
+    index_t num_items_;
+    std::shared_ptr<std::vector<T>> data_;
 };
 
 void main()
 {
     try {
-        auto a = NDArray<int>::alloc({2,2});
+        //auto a = NDArray<int>::alloc({2,2});
+        NDArray<int>::ndarray_t a = NDArray<int>::alloc({2,2});
         std::cout << "ndim: " << a->ndim() << std::endl;
         std::cout << "shape: "; for(auto&v:a->shape()){std::cout << v << ",";}; std::cout << std::endl;
         std::cout << "offset: " << a->offset() << std::endl;
@@ -204,6 +224,30 @@ void main()
         for(unsigned int i=0;i<2;++i) {
             for(unsigned int j=0;j<2;++j) {
                 std::cout << (*a)[{i,j}] << ",";
+            }
+        }
+        std::cout << std::endl;
+
+        auto b = NDArray<int>::fill({2,2},123);
+        for(unsigned int i=0;i<2;++i) {
+            for(unsigned int j=0;j<2;++j) {
+                std::cout << (*b)[{i,j}] << ",";
+            }
+        }
+        std::cout << std::endl;
+
+        auto zeros = NDArray<int>::zeros({2,2});
+        for(unsigned int i=0;i<2;++i) {
+            for(unsigned int j=0;j<2;++j) {
+                std::cout << (*zeros)[{i,j}] << ",";
+            }
+        }
+        std::cout << std::endl;
+
+        auto ones = NDArray<int>::ones({2,2});
+        for(unsigned int i=0;i<2;++i) {
+            for(unsigned int j=0;j<2;++j) {
+                std::cout << (*ones)[{i,j}] << ",";
             }
         }
         std::cout << std::endl;
