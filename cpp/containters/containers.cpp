@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <array>
+#include <iterator>
 
 void vector_sample(void)
 {
@@ -179,8 +180,99 @@ void array_sample(void)
     }
     std::cout << std::endl;
 }
+
+void pointer_sample(void)
+{
+    std::cout << "====pointer====" << std::endl;
+    int* arr = new int(4);
+    std::initializer_list<int> init = {1,2,3,4};
+    std::copy_n(init.begin(),4,arr);
+    //std::cout << "arr.size()=" << arr.size() << std::endl;
+    //std::cout << "arr.max_size()=" << arr.max_size() << std::endl;
+    //std::cout << "arr.at(2)=" << arr.at(2) << std::endl;
+    std::cout << "arr[2]=" << arr[2] << std::endl;
+    //std::cout << "arr.front()=" << arr.front() << std::endl;
+    //std::cout << "arr.back()=" << arr.back() << std::endl;
+    //arr.at(2) = 10;
+    //std::cout << "arr.at(2)=10 =" << arr.at(2) << std::endl;
+    arr[2] = 20;
+    std::cout << "arr[2]=20 =" << arr[2] << std::endl;
+    //std::cout << "for(const auto& value : arr)=";
+    //for(const auto& value : arr) {
+    //    std::cout << value << ",";
+    //}
+    //std::cout << std::endl;
+    std::cout << "for(auto i=arr;i!=arr+4;i++)=";
+    for(auto i=arr;i!=arr+4;i++) {
+        std::cout << *i << ",";
+    }
+    std::cout << std::endl;
+    std::cout << "for(auto i=v.rbegin();i!=v.rend();i++)=";
+    for(auto i=arr+4-1;i!=arr-1;i--) {
+        std::cout << *i << ",";
+    }
+    std::cout << std::endl;
+    std::cout << "int *arr_p=arr; *arr_p++=";
+    int *arr_p=arr;
+    for(int i=0;i<4;i++) {
+        std::cout << *arr_p++ << ",";
+    }
+    std::cout << std::endl;
+    //arr.fill(3);
+    //std::cout << "arr.fill(3)=";
+    //for(const auto& value : arr) {
+    //    std::cout << value << ",";
+    //}
+    //std::cout << std::endl;
+    //std::cout << "arr.empty()=" << arr.empty() << std::endl;
+    //std::array<int,4> arr2 = {5,6,7,8};
+    //std::cout << "arr.swap(arr2)=";
+    //arr.swap(arr2);
+    //for(const auto& value : arr) {
+    //    std::cout << value << ",";
+    //}
+    //std::cout << std::endl;
+    int arr1d[4] = {1,2,3,4};
+    std::cout << "for(const auto& value : arr1d)=";
+    for(const auto& value : arr1d) {
+        std::cout << value << ",";
+    }
+    std::cout << std::endl;
+    std::cout << "for(auto i=std::begin(arr1d);i!=std::end(arr1d);i++)=";
+    for(auto i=std::begin(arr1d);i!=std::end(arr1d);i++) {
+        std::cout << *i << ",";
+    }
+    std::cout << std::endl;
+    int arr2d[2][2] = {{1,2},{3,4}};
+    std::cout << "for(const auto& i : arr2d)=";
+    for(const auto& i : arr2d) {
+        for(const auto& value : i) {
+            std::cout << value << ",";
+        }
+    }
+    std::cout << std::endl;
+    std::cout << "for(auto i=std::begin(arr2d);i!=std::end(arr2d);i++)=";
+    for(auto i=std::begin(arr2d);i!=std::end(arr2d);i++) {
+        for(auto j=std::begin(*i);j!=std::end(*i);j++) {
+            std::cout << *j << ",";
+        }
+    }
+    std::cout << std::endl;
+}
+
 int main()
 {
-    vector_sample();
-    array_sample();
+    try {
+        vector_sample();
+        array_sample();
+        pointer_sample();
+    } catch(std::out_of_range& e) {
+        std::cout << "out_of_range: " << e.what() << std::endl;
+    } catch(std::runtime_error& e) {
+        std::cout << "runtime_error: " << e.what() << std::endl;
+    } catch(std::logic_error& e) {
+        std::cout << "logic_error: " << e.what() << std::endl;
+    } catch(...) {
+        std::cout << "Some Exception!" << std::endl;
+    }
 }

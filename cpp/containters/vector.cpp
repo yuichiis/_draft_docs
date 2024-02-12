@@ -1,5 +1,7 @@
 #include <iostream>
 #include <memory>
+#include <numeric>
+#include <algorithm>
 
 template <typename T>
 class Vect {
@@ -20,6 +22,9 @@ public:
         }
         return data_[index];
     }
+    T& operator[](int index) {
+        return at(index);
+    }
 
     class iterator {
     private:
@@ -32,10 +37,13 @@ public:
             ++index_;
             return *this;
         }
-        const T& operator*() {
+        const T& operator*() const {
             return my_self_->data_[index_];
         }
-        bool operator!=(iterator& iter) {
+        T& operator*() {
+            return my_self_->data_[index_];
+        }
+        bool operator!=(const iterator& iter) {
             return index_ != iter.index_;
         }
     };
@@ -57,4 +65,26 @@ void main()
     for(const auto& v: *a) {
         std::cout << v << ",";
     }
+    std::cout << std::endl;
+
+    Vect<int> b(3);
+    b[0] = 1;
+    b[1] = 2;
+    b[2] = 3;
+
+    int sum = std::accumulate(b.begin(), b.end(), 0);
+    std::cout << "sum=" << sum << std::endl;
+    int sum2 = 0;
+    std::for_each(b.begin(),b.end(),[&sum2] (int v) mutable {
+        sum2  += v;
+    });
+    std::cout << "sum2=" << sum2 << std::endl;
+    int plus = 10;
+    std::for_each(b.begin(),b.end(),[plus] (int& v) mutable {
+        v += plus;
+    });
+    for(const auto& v: b) {
+        std::cout << v << ",";
+    }
+    std::cout << std::endl;
 }
