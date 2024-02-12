@@ -1,5 +1,7 @@
 #include "ndarray.h"
 
+using rindow::math::NDArray;
+
 void sub()
 {
     using ndarray_t = NDArray<int>::ndarray_t;

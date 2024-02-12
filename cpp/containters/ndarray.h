@@ -8,6 +8,9 @@
 #include <vector>
 #include <algorithm>
 
+namespace rindow {
+namespace math {
+
 template <typename T>
 class NDArray {
 public:
@@ -272,5 +275,7 @@ private:
         return offset_+index;
     }
 };
+}
+}
 
 #endif // RINDOW_MATH_NDARRAY_H
