@@ -9,40 +9,42 @@ title: "Rindow NeuralNetworksインストール"
 - [GPU/OpenCL support](GPU/OpenCL support)
 
 
-
 動作環境
------------------------------------------
-Rindow NeuralNetworksは以下の動作環境でテストしています。
+---------------------
+Rindow Neural Networks は、次の動作環境でテストされています。
 
-- PHP 7.2, 7.3, 7.4
-- Windows 10 20H2
-- Ubuntu 18.04, 20.04
-- AMD CPU/APU 64bit(SSE2)
-- OpenBLAS (0.3.13 Windows-x64, 0.3.8 Ubuntu2004, 0.2.20 Ubuntu1804)
+・PHP 8.1、8.2、8.3 (PHP 7.x,8.0環境で使用する場合は、Release 1.xをご利用ください。)
+- Windows 10 20H2以降。
+- Ubuntu 20.04、22.04
+- AMD/Intel CPU/APU 64bit(SSE2以降)
+- OpenBLAS (0.3.20 Windows-x64、0.3.20 Ubuntu-2204、0.3.8 Ubuntu-2004)
+- CLBlast (1.5.2以降、Windows-x64、Ubuntu-2204、Ubuntu-2004)
 
-Intel CPUでも動作するでしょう。
+また、Intel/AMD CPU/APU および OpenCL ドライバーを備えた統合グラフィックスでも動作します。
+
 
 Windowsの場合のインストール手順
------------------------------------------
+----------------------------------
 PHPのインストール
 
-Windows10では、Windows版PHPをインストールします。
+Windows 10/11 の場合は、Windows 用 PHP をインストールします。
 
-+ https://windows.php.net/download/ から PHP7.4(または7.2,7.3) x64 Thread Safe版をダウンロードしてください。
-+ お好みの場所に解凍します。
-+ php.ini-developmentをコピーしてphp.ini作成します。
-+ PHP.EXEに対する実行PATHを設定します。
-+ PHP -vでPHPが動作することを確かめてください。
++ PHP x64 バージョンを https://windows.php.net/download/ からダウンロードします。Non Thread SafeバージョンとThread Safeバージョンのどちらでも構いません。
++ 選択した場所に解凍します。
++ php.ini-developmentをコピーしてphp.iniを作成します。
++ PHP.EXEの実行PATHを設定します。
++ PHP が PHP -v で動作することを確認します。
 
 ```shell
-C:TEMP>COPY C:\php\php74\php.ini-development C:\php\php74\php.ini
+C:TEMP>COPY C:\php\php.ini-development C:\php\php.ini
 あなたのお好みにphp.iniを編集。
-C:TEMP>PATH %PATH%;C:\php\php74
+
+C:TEMP>PATH %PATH%;C:\php
 C:TEMP>php -v
-PHP 7.4.13 (cli) (built: Nov 24 2020 12:43:32) ( ZTS Visual C++ 2017 x64 )
+PHP 8.3.4 (cli) (built: Mar 13 2024 11:42:47) (NTS Visual C++ 2019 x64)
 Copyright (c) The PHP Group
-Zend Engine v3.4.0, Copyright (c) Zend Technologies
-    with Zend OPcache v7.4.13, Copyright (c), by Zend Technologies
+Zend Engine v4.3.4, Copyright (c) Zend Technologies
+    with Zend OPcache v8.3.4, Copyright (c), by Zend Technologies
 C:TEMP>
 ```
 
@@ -58,31 +60,32 @@ C:TEMP>CD \bin
 C:bin>echo @php "%~dp0composer.phar" %*>composer.bat
 ```
 
-Rindow NeuralNetworksに必要なPHP拡張をインストールします。
+Rindow Neural Networksに必要な PHP 拡張機能をインストールします。
 
-+ https://github.com/rindow/rindow-openblas/releases から最新バージョンのrindow_openblasをダウンロードして解凍します。
-+ https://github.com/xianyi/OpenBLAS/releases から対応するリリース番号のOpenBLASをダウンロードして解凍します。
-+ 実行パスにOpenBLASのDLLのパスを設定しします。
-+ php_rindow_openblas.dllをPHPのextディレクトリコピーします。
-+ php.iniに必要な設定をします。
-    - memory_limit = 8G
-    - extension=rindow_openblas
-    - extension=pdo_sqlite
-    - extension=gd2
-    - extension=mbstring
-    - extension=openssl
-+ PHP -mでrindow_openblasがロードされている事を確認します。
++ https://github.com/xianyi/OpenBLAS/releases から対応するプレビルドバイナリファイル をダウンロードして解凍します。 
++ https://github.com/rindow/rindow-matlib/releases から対応するプレビルドバイナリファイル をダウンロードして解凍します。 
++ OpenBLASとRindow-MatlibのDLLパスを実行パスに設定します。
++ php.iniに必要な設定を行います。
+     - memory_limit = 8G
+     - extension = ffi
+     - extension = gd
+     - extension = mbstring
+     - extension = openssl
+     - extension = pdo_sqlite
+     - extension = zip
++ PHP拡張 が PHP -m でロードされていることを確認してください。
+
 
 ```shell
-C:TEMP>PATH %PATH%;C:\OpenBLAS\OpenBLAS-0.3.13-x64\bin
-C:TEMP>COPY php_rindow_openblas-0.1.6-7.4-ts-vc15-x64\php_rindow_openblas.dll C:\php\php-7.4.13-Win32-vc15-x64\ext
+C:TEMP>PATH %PATH%;C:\OpenBLAS\OpenBLAS-0.3.26-x64\bin
+C:TEMP>PATH %PATH%;C:\Matlib\rindow-matlib-1.0.0-win64\bin
 php.iniを編集
 C:TEMP>php -m
 [PHP Modules]
 ...
-pdo_sqlite
+ffi
 ...
-rindow_openblas
+pdo_sqlite
 ...
 C:TEMP>
 ```
@@ -91,24 +94,40 @@ Rindow NeuralNetworksをインストールします。
 
 + あなたのプロジェクトディレクトリを作成します。
 + composerでrindow/rindow-neuralnetworksをインストールします。
++ 高速化の為にcomposerでrindow/rindow-math-matrlix-matlibffiをインストールします。
 + グラフ表示の為にcomposerでrindow/rindow-math-plotをインストールします。
-+ サンプルを実行して動作確認します。
-+ 結果がグラフ表示されます。
++ rindow-math-matrlixの状態がAdvancedかAcceleratedになっていることを確認します。
 
 ```shell
 C:TEMP>MKDIR \tutorials
 C:TEMP>CD \tutorials
 C:tutorials>composer require rindow/rindow-neuralnetworks
+C:tutorials>composer require rindow/rindow-matrlix-matlibffi
+C:tutorials>vendor/bin/rindow-math-matrix
+Service Level   : Advanced
+Buffer Factory  : Rindow\Math\Buffer\FFI\BufferFactory
+BLAS Driver     : Rindow\OpenBLAS\FFI\Blas
+LAPACK Driver   : Rindow\OpenBLAS\FFI\Lapack
+Math Driver     : Rindow\Matlib\FFI\Matlib
+```
+
+サンプルプログラムを実行
+
++ サンプルを実行して動作確認します。
++ 結果がグラフ表示されます。
+
+
+```shell
 C:tutorials>MKDIR samples
 C:tutorials>CD samples
 C:tutorials\samples>COPY ..\vendor\rindow\rindow-neuralnetworks\samples\* .
 C:tutorials\samples>php mnist-basic-clasification.php
 Downloading train-images-idx3-ubyte.gz ...Done
 ....
-Epoch 4/5 ........................ - 10 sec.
- loss:0.1276 accuracy:0.9641 val_loss:0.1162 val_accuracy:0.9649
-Epoch 5/5 ........................ - 11 sec.
- loss:0.1063 accuracy:0.9703 val_loss:0.1059 val_accuracy:0.9688
+Epoch 4/5 [.........................] 1 sec. remaining:00:00  - 2 sec.
+ loss:0.1264 accuracy:0.9640 val_loss:0.1246 val_accuracy:0.9604
+Epoch 5/5 [.........................] 1 sec. remaining:00:00  - 2 sec.
+ loss:0.1054 accuracy:0.9698 val_loss:0.1129 val_accuracy:0.9675
 グラフ表示されます
 ```
 
@@ -119,12 +138,12 @@ phpをインストールします。
 + apt コマンドでphp-cliとphp-mbstringとunzipをインストールします。
 
 ```shell
-$ sudo apt install php-cli7.4 php7.4-mbstring php7.4-sqlite3 php7.4-gd unzip
+$ sudo apt install php-cli8.3 php8.3-mbstring php8.3-curl php8.3-sqlite3 php8.3-gd php8.3-xml php8.3-opcache unzip
 $ php -v
-PHP 7.4.3 (cli) (built: Oct  6 2020 15:47:56) ( NTS )
+PHP 8.3.4 (cli) (built: Mar 16 2024 08:40:08) (NTS)
 Copyright (c) The PHP Group
-Zend Engine v3.4.0, Copyright (c) Zend Technologies
-    with Zend OPcache v7.4.3, Copyright (c), by Zend Technologies
+Zend Engine v4.3.4, Copyright (c) Zend Technologies
+    with Zend OPcache v8.3.4, Copyright (c), by Zend Technologies
 ```
 
 composerをインストールします。
@@ -143,23 +162,31 @@ php "${dir}/composer.phar" "$@"
 ^Z
 $ chmod +x composer
 $ composer -V
-Composer version 2.0.8 2020-12-03 17:20:38
+Composer version 2.6.6 2023-12-08 18:32:26
 ```
 
 
-Rindow NeuralNetworksに必要なPHP拡張をインストールします。
+Rindow NeuralNetworksに必要なライブラリをインストールします。
 
-+ https://github.com/rindow/rindow-openblas/releases から最新バージョンのrindow_openblasをダウンロードします。
++ OpenBLASをaptコマンドでインストール
++ https://github.com/rindow/rindow-matlib/releases からRindow-Matlibのプレビルドバイナリファイルの最新バージョンをダウンロードします。
 + ダウンロードしたdebファイルをaptコマンドでインストールします。
-+ PHP -mでrindow_openblasがロードされている事を確認します。
++ PHPで使えるようにRindow-Matlibをserialモードに設定します。
 
 ```shell
-$ sudo apt install ./rindow-openblas-php7.4_0.2.0-1+ubuntu20.04_amd64.deb
-$ php -m
-[PHP Modules]
-...
-rindow_openblas
-...
+$ sudo apt install libopenblas-base liblapacke
+$ wget https://github.com/rindow/rindow-matlib/releases/download/X.X.X/rindow-matlib_X.X.X_amd64.deb
+$ sudo apt install ./rindow-matlib_X.X.X_amd64.deb
+$ sudo update-alternatives --config librindowmatlib.so
+There are 2 choices for the alternative librindowmatlib.so (providing /usr/lib/librindowmatlib.so).
+
+  Selection    Path                                             Priority   Status
+------------------------------------------------------------
+* 0            /usr/lib/rindowmatlib-openmp/librindowmatlib.so   95        auto mode
+  1            /usr/lib/rindowmatlib-openmp/librindowmatlib.so   95        manual mode
+  2            /usr/lib/rindowmatlib-serial/librindowmatlib.so   90        manual mode
+
+Press <enter> to keep the current choice[*], or type selection number: 2
 ```
 
 Rindow NeuralNetworksをインストールします。
@@ -167,9 +194,9 @@ Rindow NeuralNetworksをインストールします。
 + rindow-math-plotの画像表示コマンドを設定します。
 + あなたのプロジェクトディレクトリを作成します。
 + composerでrindow/rindow-neuralnetworksをインストールします。
++ 高速化の為にcomposerでrindow/rindow-math-matrix-matlibffiをインストールします。
 + グラフ表示の為にcomposerでrindow/rindow-math-plotをインストールします。
-+ サンプルを実行して動作確認します。
-+ 結果がグラフ表示されます。
++ rindow-math-matrlixの状態がAdvancedかAcceleratedになっていることを確認します。
 
 ```shell
 $ RINDOW_MATH_PLOT_VIEWER=/some/bin/dir/png-file-viewer
@@ -178,6 +205,20 @@ $ mkdir ~/tutorials
 $ cd ~/tutorials
 $ composer require rindow/rindow-neuralnetworks
 $ composer require rindow/rindow-math-plot
+$ vendor/bin/rindow-math-matrix
+Service Level   : Advanced
+Buffer Factory  : Rindow\Math\Buffer\FFI\BufferFactory
+BLAS Driver     : Rindow\OpenBLAS\FFI\Blas
+LAPACK Driver   : Rindow\OpenBLAS\FFI\Lapack
+Math Driver     : Rindow\Matlib\FFI\Matlib
+```
+
+サンプルプログラムを実行
+
++ サンプルを実行して動作確認します。
++ 結果がグラフ表示されます。
+
+```shell
 $ mkdir samples
 $ cd samples
 $ cp ../vendor/rindow/rindow-neuralnetworks/samples/* .
@@ -189,24 +230,111 @@ Epoch 4/5 ........................ - 10 sec.
 Epoch 5/5 ........................ - 11 sec.
  loss:0.1063 accuracy:0.9703 val_loss:0.1059 val_accuracy:0.9688
 ```
+Note: Specify "viewnior" etc. for RINDOW_MATH_PLOT_VIEWER
+
 結果がグラフ表示されます。
 
 ![Result](images/gettingstarted-result.png)
 
-GPU/OpenCL support
-------------------
+GPU/OpenCL support for Windows
+------------------------------
+Windowsは標準でOpenCLが使える状態です。
 
-Download binaries and setup PHP extension and libraries.
+CLBlastライブラリをダウンロードして実行パスを設定してください。
 
-- [Rindow OpenCL extension](https://github.com/rindow/rindow-opencl/releases)
-- [Rindow CLBlast extension](https://github.com/rindow/rindow-clblast/releases)
 - [CLBlast library](https://github.com/CNugteren/CLBlast/releases)
 
-Set environment variable.
+```shell
+C:TEMP>PATH %PATH%;C:\CLBlast\CLBlast-1.6.2-Windows-x64\bin
+```
+
+rindow-neuralnetworksのバックエンドでOpenCLを使用するように設定します。
+
++ rindow-math-matrixがAcceleratedになり、OpenCLのドライバーが認識されていることを確認します。
++ rindow-neuralnetworksのバックエンドでGPUを使うように環境変数に設定します。
++ サンプルプログラムを実行します。
+
 
 ```shell
-C:tutorials>RINDOW_NEURALNETWORKS_BACKEND=clblast
-C:tutorials>export RINDOW_NEURALNETWORKS_BACKEND
+C:tutorials>vendor\bin\rindow-math-matrix
+Service Level   : Accelerated
+Buffer Factory  : Rindow\Math\Buffer\FFI\BufferFactory
+BLAS Driver     : Rindow\OpenBLAS\FFI\Blas
+LAPACK Driver   : Rindow\OpenBLAS\FFI\Lapack
+Math Driver     : Rindow\Matlib\FFI\Matlib
+OpenCL Factory  : Rindow\OpenCL\FFI\OpenCLFactory
+CLBlast Factory : Rindow\CLBlast\FFI\CLBlastFactory
+
+C:tutorials>SET RINDOW_NEURALNETWORKS_BACKEND=rindowclblast::GPU
 C:tutorials>cd samples
-C:samples>php mnist-basic-clasification.php
+C:samples>php basic-image-clasification.php
 ```
+注: RINDOW_NEURALNETWORKS_BACKEND は、rindowclblast などの名前に加えて、OpenCL デバイス タイプ、またはプラットフォーム ID とデバイス ID のセットを指定できます。GPUが2個以上ある場合にはこの指定方法を使って特定できます。 例えば;
+
+- rindowclblast       => platform #0, device #0
+- rindowclblast::GPU  => GPU type device: Integrated GPU, etc.
+- rindowclblast::CPU  => CPU type device: pocl-opencl-icd, etc.
+- rindowclblast::0,0  => platform #0, device #0
+- rindowclblast::0,1  => platform #0, device #1
+- rindowclblast::1,0  => platform #1, device #0
+
+もし、うまくターゲットのGPUに設定できない場合はclinfoコマンドでOpenCLのデバイスの状態を確認しください。
+```shell
+C:tutorials>vendor\bin\clinfo
+Number of platforms(1)
+Platform(0)
+    CL_PLATFORM_NAME=Intel(R) OpenCL
+    CL_PLATFORM_PROFILE=FULL_PROFILE
+....
+...
+..
+```
+
+GPU/OpenCL support for Ubuntu
+------------------------------
+OpenCL が Linux 環境で正しく動作することが大前提です。 
+（それはかなり難しいことです）
+
+OpenCL環境をインストールします。
+
+```shell
+$ sudo apt install clinfo
+$ sudo apt install intel-opencl-icd
+```
+Ubuntu standard OpenCL drivers include:
+- mesa-opencl-icd
+- beignet-opencl-icd
+- intel-opencl-icd
+- nvidia-opencl-icd-xxx
+- pocl-opencl-icd
+
+Linux標準のOpenCLドライバーはまともに動作しないので、ドライバーやバージョンごとに何とか動くように臨機応変に対処します。
+
+clinfoコマンドでOpenCLが動作していることを確認してください。
+```shell
+$ clinfo
+Number of platforms                               1
+  Platform Name                                   Intel Gen OCL Driver
+  Platform Vendor                                 Intel
+....
+...
+..
+```
+
+CLBlastライブラリをダウンロードしてインストールしてください。
+ダウンロードとインストールを簡単にするためのスクリプトを使用できます。
+
++ 最新バージョンを確認: [CLBlast library](https://github.com/CNugteren/CLBlast/releases)
++ スクリプトをコピー
++ スクリプトの先頭にあるバージョンを変更
++ スクリプトを実行してdebファイルを作成
++ debファイルをインストール
+
+```shell
+$ cp vendor/rindow/rindow-clblast-ffi/clblast-packdeb.sh .
+$ vi clblast-packdeb.sh
+CLBLASTVERSION=1.6.2   <===== 変更
+$ sh clblast-packdeb.sh
+$ sudo apt install ./clblast_X.X.X-1+ubuntuXX.XX_amd64.deb
+```
+
