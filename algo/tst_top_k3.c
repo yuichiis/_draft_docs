@@ -28,7 +28,7 @@ void swap_float(float *a, float *b)
 }
 void swap_int(int *a, int *b)
 {
-    float tmp = *a;
+    int tmp = *a;
     *a = *b;
     *b = tmp;
 }
