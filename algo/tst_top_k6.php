@@ -116,8 +116,6 @@ class TopK
             __local        int * indicesHeap
             )
         {
-            //float valuesHeap[8];
-            //int indicesHeap[8];
             int gid0 = get_global_id(0);
             int gid1 = get_global_id(1);
             int grid0 = get_group_id(0);
@@ -260,37 +258,22 @@ EOT;
         //$this->assertMatrixBufferSpec("values", $values, $m,$k, $offsetValues, $k);
         //$this->assertMatrixBufferSpec("indices", $indices, $m,$k, $offsetIndices, $k);
 
+        if($indices->dtype()!=NDArray::int32) {
+            throw new InvalidArgumentException('dtype of indices must be int32.');
+        }
         if($k>$n) {
             throw new InvalidArgumentException('size must be greater or equal k.');
         }
         $sorted = $sorted ? 1 : 0;
 
-        $groups = intdiv($this->localMemSize,2*($k*32/8));
-        echo "memsize per value byte=$groups\n";
-        echo "maxWorkItems=".$this->maxWorkItem[0]."\n";
-        if($groups > $this->maxWorkItem[0]) {
-            $groups > $this->maxWorkItem[0];
-        }
-        echo "groups=$groups\n";
-        $partSize = intdiv($n,$groups);
-        echo "partSize=$partSize\n";
-        $mergeSize = $groups*$k;
-        echo "mergeSize=$mergeSize\n";
-        echo "sqrt(n/k)=".(int)floor(sqrt($n/$k))."\n";
-        echo "recompute\n";
         $groups = (int)floor(sqrt($n/$k));
-        echo "groups=$groups\n";
-        $partSize = intdiv($n,$groups);
-        echo "partSize=$partSize\n";
-        $mergeSize = $groups*$k;
-        echo "mergeSize=$mergeSize\n";
-        echo "sqrt(n/k)=".(int)floor(sqrt($n/$k))."\n";
-        //   groups = mem/2/k*(32/8)
-        //   partsize = n/groups
-        //   mergesize = groups*k
-        //   n/groups = groups*k
-        //   groups*groups = n/k
-        //   groups = sqrt(n/k)
+        $groupsByMemlimit = intdiv($this->localMemSize,$k*($values->value_size()+$indices->value_size()));
+        if($groups>$groupsByMemlimit) {
+            $groups = $groupsByMemlimit;
+        }
+        if($groups>$this->maxWorkItem[0]) {
+            $groups = $this->maxWorkItem[0];
+        }
 
         //$total_local_items = $n;
         //$max_work_items = $this->maxWorkItem[0];
@@ -304,7 +287,7 @@ EOT;
 
         //$groups = 16;
 
-        echo "groups=$groups\n";
+        //echo "groups=$groups\n";
 
         $kernel_name = 'topkFindTopNumbers';
         $this->sources[$kernel_name] = $this->source();
@@ -333,10 +316,11 @@ $lacl = $mo->laAccelerated('clblast',['deviceType'=>OpenCL::CL_DEVICE_TYPE_GPU])
 $cl = $lacl->service()->opencl();
 $topk = new TopK($lacl->service(),$lacl->getQueue());
 
-$m = 1;
-$n = 100000;
-$k = 8;
+$m = 64;
+$n = 50000;
+$k = 10;
 $sorted = true;
+$epochs = 1000;
 
 $inputs = $lacl->randomUniform([$m,$n],0.0,1000.0,dtype:NDArray::float32);
 //$inputs = $lacl->array([
@@ -349,15 +333,17 @@ $indices = $lacl->alloc([$m,$k],dtype:NDArray::int32);
 
 $events = $cl->EventList();
 $startTime = microtime(true);
-$topk->topK(
-    $m,$n,
-    $inputs->buffer(),$inputs->offset(),
-    $k,$sorted,
-    $values->buffer(),$values->offset(),
-    $indices->buffer(),$indices->offset(),
-    $events
-);
-$events->wait();
+for($i=0;$i<$epochs;++$i) {
+    $topk->topK(
+        $m,$n,
+        $inputs->buffer(),$inputs->offset(),
+        $k,$sorted,
+        $values->buffer(),$values->offset(),
+        $indices->buffer(),$indices->offset(),
+        $events
+    );
+    $events->wait();
+}
 $endTime = microtime(true);
 $valuesND = $lacl->toNDArray($values);
 $indicesND = $lacl->toNDArray($indices);
