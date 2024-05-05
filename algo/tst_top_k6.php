@@ -19,6 +19,7 @@ class TopK
     protected array $program = [];
     /** @var array<int> $maxWorkItem */
     protected array $maxWorkItem;
+    protected int $localMemSize;
 
     public function __construct(object $service,object $queue)
     {
@@ -28,6 +29,8 @@ class TopK
         $this->context = $queue->getContext();
         $devices = $this->context->getInfo(OpenCL::CL_CONTEXT_DEVICES);
         $this->maxWorkItem = $devices->getInfo(0,OpenCL::CL_DEVICE_MAX_WORK_ITEM_SIZES);
+        $this->localMemSize = $devices->getInfo(0,OpenCL::CL_DEVICE_LOCAL_MEM_SIZE);
+        
     }
 
     private function source() : string
@@ -102,11 +105,13 @@ class TopK
         __kernel void topkFindTopNumbers(
             int size,
             __global const float * inputs,
-            int offset,
+            int offsetInputs,
             int k,
             int sorted,
             __global       float * values,
+            int offsetValues,
             __global       int * indices,
+            int offsetIndices,
             __local        float * valuesHeap,
             __local        int * indicesHeap
             )
@@ -124,14 +129,14 @@ class TopK
             int lsz0 = get_local_size(0);
             int lsz1 = get_local_size(1);
 
-            printf("gid=[%d,%d],grid=[%d,%d],lid=[%d,%d],grsz=[%d,%d],lsz=[%d,%d]\\n",
-                gid0,gid1,grid0,grid1,lid0,lid1,grsz0,grsz1,lsz0,lsz1);
+            //printf("gid=[%d,%d],grid=[%d,%d],lid=[%d,%d],grsz=[%d,%d],lsz=[%d,%d]\\n",
+            //    gid0,gid1,grid0,grid1,lid0,lid1,grsz0,grsz1,lsz0,lsz1);
 
             int batchid = gid0 / lsz0;
             int thid = lid0;
             int groups = lsz0;
 
-            int rowOffset = offset+batchid*size;
+            int rowOffset = offsetInputs+batchid*size;
             int heapOffset = k*thid;
             // copy first elements
             for(int i=0; i<k; ++i) {
@@ -152,7 +157,7 @@ class TopK
             // Process remaining elements
             for(int i=k*groups+thid; i<size; i+=groups) {
                 if(inputs[rowOffset+i] > valuesHeap[heapOffset]) {
-                    printf("batch=%d, rowOffset=%d, th=%d, i=%d, data=%f\\n",batchid,rowOffset,thid,i,inputs[rowOffset+i]);
+                    //printf("batch=%d, rowOffset=%d, th=%d, i=%d, data=%f\\n",batchid,rowOffset,thid,i,inputs[rowOffset+i]);
                     valuesHeap[heapOffset] = inputs[rowOffset+i];
                     indicesHeap[heapOffset] = i;
                     topkMinHeapify(k, &valuesHeap[heapOffset], &indicesHeap[heapOffset], 0);
@@ -187,18 +192,18 @@ class TopK
             barrier(CLK_LOCAL_MEM_FENCE);
 
             // copy result to global
-            //for(int i=0; i<k; i += groups) {
-            //    if(i+thid<k) {
-            //        values[batchid*k+i+thid] = valuesHeap[i+thid];
-            //        indices[batchid*k+i+thid] = indicesHeap[i+thid];
-            //    }
-            //}
+            for(int i=0; i<k; i += groups) {
+                if(i+thid<k) {
+                    values[offsetValues+batchid*k+i+thid] = valuesHeap[i+thid];
+                    indices[offsetIndices+batchid*k+i+thid] = indicesHeap[i+thid];
+                }
+            }
 
             // copy debug to global
-            for(int i=0; i<k; ++i) {
-                values[batchid*k*groups+k*thid+i] = valuesHeap[k*thid+i];
-                indices[batchid*k*groups+k*thid+i] = indicesHeap[k*thid+i];
-            }
+            //for(int i=0; i<k; ++i) {
+            //    values[offsetValues+batchid*k*groups+k*thid+i] = valuesHeap[k*thid+i];
+            //    indices[offsetIndices+batchid*k*groups+k*thid+i] = indicesHeap[k*thid+i];
+            //}
         }
     
 EOT;
@@ -260,6 +265,33 @@ EOT;
         }
         $sorted = $sorted ? 1 : 0;
 
+        $groups = intdiv($this->localMemSize,2*($k*32/8));
+        echo "memsize per value byte=$groups\n";
+        echo "maxWorkItems=".$this->maxWorkItem[0]."\n";
+        if($groups > $this->maxWorkItem[0]) {
+            $groups > $this->maxWorkItem[0];
+        }
+        echo "groups=$groups\n";
+        $partSize = intdiv($n,$groups);
+        echo "partSize=$partSize\n";
+        $mergeSize = $groups*$k;
+        echo "mergeSize=$mergeSize\n";
+        echo "sqrt(n/k)=".(int)floor(sqrt($n/$k))."\n";
+        echo "recompute\n";
+        $groups = (int)floor(sqrt($n/$k));
+        echo "groups=$groups\n";
+        $partSize = intdiv($n,$groups);
+        echo "partSize=$partSize\n";
+        $mergeSize = $groups*$k;
+        echo "mergeSize=$mergeSize\n";
+        echo "sqrt(n/k)=".(int)floor(sqrt($n/$k))."\n";
+        //   groups = mem/2/k*(32/8)
+        //   partsize = n/groups
+        //   mergesize = groups*k
+        //   n/groups = groups*k
+        //   groups*groups = n/k
+        //   groups = sqrt(n/k)
+
         //$total_local_items = $n;
         //$max_work_items = $this->maxWorkItem[0];
         //if($total_local_items>$max_work_items) {
@@ -270,7 +302,9 @@ EOT;
         //    }
         //}
 
-        $groups = 2;
+        //$groups = 16;
+
+        echo "groups=$groups\n";
 
         $kernel_name = 'topkFindTopNumbers';
         $this->sources[$kernel_name] = $this->source();
@@ -281,9 +315,11 @@ EOT;
         $kernel->setArg(3,$k,NDArray::int32);
         $kernel->setArg(4,$sorted,NDArray::int32);
         $kernel->setArg(5,$values);
-        $kernel->setArg(6,$indices);
-        $kernel->setArg(7,null,$this->adjBoundary($k*$values->value_size())*$groups);
-        $kernel->setArg(8,null,$this->adjBoundary($k*$indices->value_size())*$groups);
+        $kernel->setArg(6,$offsetValues,NDArray::int32);
+        $kernel->setArg(7,$indices);
+        $kernel->setArg(8,$offsetIndices,NDArray::int32);
+        $kernel->setArg(9,null,$this->adjBoundary($k*$values->value_size())*$groups);
+        $kernel->setArg(10,null,$this->adjBoundary($k*$indices->value_size())*$groups);
 
         $global_work_size = [$m*$groups];
         $local_work_size = [$groups];
@@ -297,33 +333,37 @@ $lacl = $mo->laAccelerated('clblast',['deviceType'=>OpenCL::CL_DEVICE_TYPE_GPU])
 $cl = $lacl->service()->opencl();
 $topk = new TopK($lacl->service(),$lacl->getQueue());
 
-$m = 3;
-$n = 16;
-$k = 4;
+$m = 1;
+$n = 100000;
+$k = 8;
 $sorted = true;
 
-$inputs = $lacl->array([
-    [7,8,10,11, 12,13,14,15, 4,5,1,2,     3,0,6,9,    ],
-    [2,3,4,5,   1,9,7,8,     6,0,10,11,   12,13,14,15,],
-    [5,1,2,3,   4,6,7,8,     12,13,14,15, 9,0,10,11,  ],
-],dtype:NDArray::float32);
-$values = $lacl->alloc([$m,$k*2],dtype:NDArray::float32);
-$indices = $lacl->alloc([$m,$k*2],dtype:NDArray::int32);
+$inputs = $lacl->randomUniform([$m,$n],0.0,1000.0,dtype:NDArray::float32);
+//$inputs = $lacl->array([
+//    [7,8,10,11, 12,13,14,15, 4,5,1,2,     3,0,6,9,    ],
+//    [2,3,4,5,   1,9,7,8,     6,0,10,11,   12,13,14,15,],
+//    [5,1,2,3,   4,6,7,8,     12,13,14,15, 9,0,10,11,  ],
+//],dtype:NDArray::float32);
+$values = $lacl->alloc([$m,$k],dtype:NDArray::float32);
+$indices = $lacl->alloc([$m,$k],dtype:NDArray::int32);
 
 $events = $cl->EventList();
+$startTime = microtime(true);
 $topk->topK(
     $m,$n,
-    $inputs->buffer(),0,
+    $inputs->buffer(),$inputs->offset(),
     $k,$sorted,
-    $values->buffer(),0,
-    $indices->buffer(),0,
+    $values->buffer(),$values->offset(),
+    $indices->buffer(),$indices->offset(),
     $events
 );
 $events->wait();
+$endTime = microtime(true);
 $valuesND = $lacl->toNDArray($values);
 $indicesND = $lacl->toNDArray($indices);
-echo $mo->toString($inputs,indent:true)."\n";
-echo $mo->toString($valuesND,indent:true)."\n";
-echo $mo->toString($indicesND,indent:true)."\n";
+echo "time=".(($endTime-$startTime))."\n";
+//echo $mo->toString($inputs,format:'%6.1f',indent:true)."\n";
+//echo $mo->toString($valuesND,format:'%6.1f',indent:true)."\n";
+//echo $mo->toString($indicesND,indent:true)."\n";
 //var_dump($values->toArray());
 //var_dump($indices->toArray());
