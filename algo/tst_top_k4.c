@@ -18,61 +18,28 @@ void print_arr(int n, const float *arr, int *indices)
     printf("\n");
 }
 
-int swap_count = 0;
-void swap_float(float *a, float *b)
-{
-    float tmp = *a;
-    *a = *b;
-    *b = tmp;
-    ++swap_count;
-}
-void swap_int(int *a, int *b)
-{
-    int tmp = *a;
-    *a = *b;
-    *b = tmp;
-}
+void maxInsertSort(int size, float array[], int indices[], int start) {
+    //printf("===== begin insertSort =====\n");
+    //printf("size=%d,k=%d\n",size,start);
+    for (int i = start; i < size; i++) {
+        float value = array[i];
+        int index = indices[i];
+        int j = i - 1;
+        //print_array(array, size);
+        //printf("i=%d,j=%d,value=%6.1f\n",i,j,value);
 
-void minHeapify(int size, float heap[],  int indices[], int parent) {
-    //printf("========================\n");
-    //printf("minHeapify: size=%d parent=%d\n",size,parent);
-    int left = 2 * parent + 1;
-    int right = 2 * parent + 2;
-    //printf("parent=%d left=%d, right=%d\n",parent,left,right);
-
-    while (left < size) {
-        int smallest;
-        if(right < size) {
-            //printf("*left:%d =%4.1f *right:%d =%4.1f\n",left,heap[left],right,heap[right]);
-        } else {
-            //printf("*left:%d =%4.1f *right:%d = NONE\n",left,heap[left],right);
-        }
-        if (right < size && heap[right] < heap[left]) {
-            //printf("right is smaller\n");
-            smallest = right;
-        } else {
-            //printf("left is smaller\n");
-            smallest = left;
+        while (j >= 0 && array[j] < value) {
+            array[j + 1] = array[j];
+            indices[j + 1] = indices[j];
+            j--;
         }
 
-        //printf("*parent:%d =%4.1f *smaller:%d =%4.1f\n",parent,heap[parent],smallest,heap[smallest]);
-        if (heap[parent] <= heap[smallest]) {
-            //printf("parent is smallest\n");
-            break;
-        }
-        //printf("parent is not smallest\n");
-        // swap
-        //printf("swap: parent:%d:%4.1f, smallest:%d:%4.1f\n",parent,heap[parent],smallest,heap[smallest]);
-        swap_float(&heap[parent],&heap[smallest]);
-        swap_int(&indices[parent],&indices[smallest]);
-        //printf("*parent:%d =%4.1f *smallest:%d =%4.1f\n",parent,heap[parent],smallest,heap[smallest]);
-
-        parent = smallest;
-        left = 2 * parent + 1;
-        right = 2 * parent + 2;
-        //printf("parent=%d left=%d, right=%d\n",parent,left,right);
+        array[j + 1] = value;
+        indices[j + 1] = index;
     }
+    //printf("===== end insertSort =====\n");
 }
+
 
 // Function to extract the largest 10 numbers from an array
 void findTopNumbers(
@@ -90,27 +57,15 @@ void findTopNumbers(
         indices[i] = i;
     }
     //print_arr(k, minHeap);
-    for (int i = (k / 2) - 1; i >= 0; --i) {
-        minHeapify(k, topNumbers, indices, i);
-    }
+    maxInsertSort(k, topNumbers, indices, 0);
     //print_arr(k, minHeap);
 
     // Process remaining elements
     for (int i = k; i < size; ++i) {
-        if (arr[i] > topNumbers[0]) {
-            topNumbers[0] = arr[i];
-            indices[0] = i;
-            minHeapify(k, topNumbers, indices, 0);
-        }
-    }
-
-    if(sorted) {
-        // sort
-        for (int i = k - 1; i > 0; --i) {
-            // swap
-            swap_float(&topNumbers[0],&topNumbers[i]);
-            swap_int(&indices[0],&indices[i]);
-            minHeapify(i, topNumbers, indices, 0);
+        if (arr[i] > topNumbers[k-1]) {
+            topNumbers[k-1] = arr[i];
+            indices[k-1] = i;
+            maxInsertSort(k, topNumbers, indices, k-1);
         }
     }
 }
@@ -131,7 +86,7 @@ void s_topK(
     }
 }
 
-int sortmain()
+int testsortmain()
 {
     float data[10] = { 1, 0, 9, 8, 4, 3, 2,  7, 6, 5};
     float arr[10];
@@ -142,23 +97,7 @@ int sortmain()
         indices[i] = i;
     }
     print_arr(k,arr,indices);
-
-    printf("build heap\n");
-    for (int i = (k / 2) - 1; i >= 0; --i) {
-        minHeapify(k, arr, indices, i);
-        //print_arr(k,arr,indices);
-    }
-    printf("swap count=%d\n",swap_count);
-    swap_count = 0;
-    print_arr(k,arr,indices);
-
-    printf("sort larger\n");
-    for (int i = k-1; i>0; --i) {
-        swap_float(&arr[0],&arr[i]);
-        swap_int(&indices[0],&indices[i]);
-        minHeapify(i, arr,  indices, 0);
-    }
-    printf("swap count=%d\n",swap_count);
+    maxInsertSort(k,arr,indices,0);
     print_arr(k,arr,indices);
     return 0;
 }
@@ -214,7 +153,7 @@ int main(int argc, char* argv[]) {
     printf("Top K numbers:\n");
     print_arr(TOP_NUM, topNumbers[0],indices[0]);
 
-    printf("swap count=%d\n",swap_count);
+    //printf("swap count=%d\n",swap_count);
     printf("processing time %f\n", (double)(cpu_time_end-cpu_time_start)/CLOCKS_PER_SEC);
 
     free(arr);
