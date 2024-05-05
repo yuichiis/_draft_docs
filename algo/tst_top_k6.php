@@ -117,15 +117,15 @@ class TopK
             )
         {
             int gid0 = get_global_id(0);
-            int gid1 = get_global_id(1);
-            int grid0 = get_group_id(0);
-            int grid1 = get_group_id(1);
+            //int gid1 = get_global_id(1);
+            //int grid0 = get_group_id(0);
+            //int grid1 = get_group_id(1);
             int lid0 = get_local_id(0);
-            int lid1 = get_local_id(1);
-            int grsz0 = get_num_groups(0);
-            int grsz1 = get_num_groups(1);
+            //int lid1 = get_local_id(1);
+            //int grsz0 = get_num_groups(0);
+            //int grsz1 = get_num_groups(1);
             int lsz0 = get_local_size(0);
-            int lsz1 = get_local_size(1);
+            //int lsz1 = get_local_size(1);
 
             //printf("gid=[%d,%d],grid=[%d,%d],lid=[%d,%d],grsz=[%d,%d],lsz=[%d,%d]\\n",
             //    gid0,gid1,grid0,grid1,lid0,lid1,grsz0,grsz1,lsz0,lsz1);
