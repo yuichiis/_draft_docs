@@ -190,11 +190,9 @@ class TopK
             barrier(CLK_LOCAL_MEM_FENCE);
 
             // copy result to global
-            for(int i=0; i<k; i += groups) {
-                if(i+thid<k) {
-                    values[offsetValues+batchid*k+i+thid] = valuesHeap[i+thid];
-                    indices[offsetIndices+batchid*k+i+thid] = indicesHeap[i+thid];
-                }
+            for(int i=thid; i<k; i += groups) {
+                values[offsetValues+batchid*k+i] = valuesHeap[i];
+                indices[offsetIndices+batchid*k+i] = indicesHeap[i];
             }
 
             // copy debug to global
@@ -321,8 +319,14 @@ $n = 50000;
 $k = 10;
 $sorted = true;
 $epochs = 1000;
-
 $inputs = $lacl->randomUniform([$m,$n],0.0,1000.0,dtype:NDArray::float32);
+
+// imidiate
+//$m = 3;
+//$n = 16;
+//$k = 5;
+//$epochs = 1;
+//$sorted = false;
 //$inputs = $lacl->array([
 //    [7,8,10,11, 12,13,14,15, 4,5,1,2,     3,0,6,9,    ],
 //    [2,3,4,5,   1,9,7,8,     6,0,10,11,   12,13,14,15,],
@@ -350,6 +354,6 @@ $indicesND = $lacl->toNDArray($indices);
 echo "time=".(($endTime-$startTime))."\n";
 //echo $mo->toString($inputs,format:'%6.1f',indent:true)."\n";
 //echo $mo->toString($valuesND,format:'%6.1f',indent:true)."\n";
-//echo $mo->toString($indicesND,indent:true)."\n";
+//echo $mo->toString($indicesND,format:'%6d',indent:true)."\n";
 //var_dump($values->toArray());
 //var_dump($indices->toArray());
