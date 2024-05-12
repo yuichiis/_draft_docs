@@ -7,7 +7,7 @@ Githubの機能によりプレビルドバイナリーを自動的に公開す�
 これによりMacOS用のarm64とx86_64の両方を提供できるようになりました。
 MacOSのユニバーサルバイナリーをビルドできないのはGithubホステッドランナーの使用です。
 
-### MSVC name-binding on Windows
+### MSVC name-binding for Windows
 Added name binding library and made it default to prevent unexpected behavior if DLL version changes slightly on Windows.
 A newly added library resolves an issue when using MSVC's standard import library that modifies the address table and prevents you from calling functions in a DLL.
 
