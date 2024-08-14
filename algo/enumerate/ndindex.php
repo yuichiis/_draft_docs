@@ -1,5 +1,5 @@
 <?php
-
+// 再起呼び出しバージョン
 function crawler(
     int $depth,
     array $indices,

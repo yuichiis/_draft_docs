@@ -1,4 +1,5 @@
 <?php
+// ループ展開バージョン
 function crawlerLoop(array $shape) : void {
     $depth = count($shape);
     $indices = array_fill(0, $depth, 0);
