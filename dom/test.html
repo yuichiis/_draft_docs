@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script>
+      // この関数は文書が読み込まれた時に実行される
+      window.onload = () => {
+        // create a couple of elements in an otherwise empty HTML page
+        const heading = document.createElement("h1");
+        const headingText = document.createTextNode("Big Head!!");
+        heading.appendChild(headingText);
+        document.body.appendChild(heading);
+        heading.addEventListener("click", (e) => {
+            console.log(e.currentTarget === heading); // `false` をログ出力
+            console.log(heading.className); // 警告: `this` は `my_element` ではない
+        });
+      };
+    </script>
+    <title>Dom Test</title>
+  </head>
+  <body></body>
+</html>
