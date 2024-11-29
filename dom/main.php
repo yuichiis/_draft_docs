@@ -117,7 +117,7 @@ class RealDoc
         $this->body = new Element("body",fixedId:"document.body");
     }
 
-    public function run() : void {
+    public function render() : void {
         $script = $this->body->_compile();
         echo <<<EOT
         <!DOCTYPE html>
@@ -156,4 +156,4 @@ $heading = $document->createElement("h1");
 $headingText = $document->createTextNode("Big Head!");
 $heading->appendChild($headingText);
 $document->body->appendChild($heading);
-$document->run();
+$document->render();
