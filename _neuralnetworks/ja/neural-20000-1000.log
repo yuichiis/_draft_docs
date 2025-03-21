@@ -1,0 +1,168 @@
+> php neural-machine-translation-with-transformer.php
+Generating data...
+num_examples: 20000
+num_words: 1024
+epoch: 10
+batchSize: 64
+embedding_dim: 128
+num_heads: 8
+dff: 512
+Total questions: 20000
+Input  word dictionary: 1024(6814)
+Target word dictionary: 1024(3294)
+Input length: 15
+Output length: 9
+device type: GPU
+Compile model...
+Layer(type)                  Output Shape               Param #
+==================================================================
+embedding.posemb.encoder.tran(15,128)                   131072
+mask.posemb.encoder.transform(15,128)                   0
+mha.globalattn.enc_layer0.enc(15,128)                   527488
+layernorm.globalattn.enc_laye(15,128)                   256
+add.globalattn.enc_layer0.enc(15,128)                   0
+ff1.ffn.enc_layer0.encoder.tr(15,512)                   66048
+ff2.ffn.enc_layer0.encoder.tr(15,128)                   65664
+dropout.ffn.enc_layer0.encode(15,128)                   0
+add.ffn.enc_layer0.encoder.tr(15,128)                   0
+layernorm.ffn.enc_layer0.enco(15,128)                   256
+mha.globalattn.enc_layer1.enc(15,128)                   527488
+layernorm.globalattn.enc_laye(15,128)                   256
+add.globalattn.enc_layer1.enc(15,128)                   0
+ff1.ffn.enc_layer1.encoder.tr(15,512)                   66048
+ff2.ffn.enc_layer1.encoder.tr(15,128)                   65664
+dropout.ffn.enc_layer1.encode(15,128)                   0
+add.ffn.enc_layer1.encoder.tr(15,128)                   0
+layernorm.ffn.enc_layer1.enco(15,128)                   256
+mha.globalattn.enc_layer2.enc(15,128)                   527488
+layernorm.globalattn.enc_laye(15,128)                   256
+add.globalattn.enc_layer2.enc(15,128)                   0
+ff1.ffn.enc_layer2.encoder.tr(15,512)                   66048
+ff2.ffn.enc_layer2.encoder.tr(15,128)                   65664
+dropout.ffn.enc_layer2.encode(15,128)                   0
+add.ffn.enc_layer2.encoder.tr(15,128)                   0
+layernorm.ffn.enc_layer2.enco(15,128)                   256
+mha.globalattn.enc_layer3.enc(15,128)                   527488
+layernorm.globalattn.enc_laye(15,128)                   256
+add.globalattn.enc_layer3.enc(15,128)                   0
+ff1.ffn.enc_layer3.encoder.tr(15,512)                   66048
+ff2.ffn.enc_layer3.encoder.tr(15,128)                   65664
+dropout.ffn.enc_layer3.encode(15,128)                   0
+add.ffn.enc_layer3.encoder.tr(15,128)                   0
+layernorm.ffn.enc_layer3.enco(15,128)                   256
+dropout.encoder.transformer(D(15,128)                   0
+embedding.posemb.decoder.tran(9,128)                    131072
+mask.posemb.decoder.transform(9,128)                    0
+dropout.decoder.transformer(D(9,128)                    0
+mha.causalatten.dec_layer0.de(9,128)                    527488
+layernorm.causalatten.dec_lay(9,128)                    256
+add.causalatten.dec_layer0.de(9,128)                    0
+mha.crossAttn.dec_layer0.deco(9,128)                    527488
+layernorm.crossAttn.dec_layer(9,128)                    256
+add.crossAttn.dec_layer0.deco(9,128)                    0
+ff1.ffn.dec_layer0.decoder.tr(9,512)                    66048
+ff2.ffn.dec_layer0.decoder.tr(9,128)                    65664
+dropout.ffn.dec_layer0.decode(9,128)                    0
+add.ffn.dec_layer0.decoder.tr(9,128)                    0
+layernorm.ffn.dec_layer0.deco(9,128)                    256
+mha.causalatten.dec_layer1.de(9,128)                    527488
+layernorm.causalatten.dec_lay(9,128)                    256
+add.causalatten.dec_layer1.de(9,128)                    0
+mha.crossAttn.dec_layer1.deco(9,128)                    527488
+layernorm.crossAttn.dec_layer(9,128)                    256
+add.crossAttn.dec_layer1.deco(9,128)                    0
+ff1.ffn.dec_layer1.decoder.tr(9,512)                    66048
+ff2.ffn.dec_layer1.decoder.tr(9,128)                    65664
+dropout.ffn.dec_layer1.decode(9,128)                    0
+add.ffn.dec_layer1.decoder.tr(9,128)                    0
+layernorm.ffn.dec_layer1.deco(9,128)                    256
+mha.causalatten.dec_layer2.de(9,128)                    527488
+layernorm.causalatten.dec_lay(9,128)                    256
+add.causalatten.dec_layer2.de(9,128)                    0
+mha.crossAttn.dec_layer2.deco(9,128)                    527488
+layernorm.crossAttn.dec_layer(9,128)                    256
+add.crossAttn.dec_layer2.deco(9,128)                    0
+ff1.ffn.dec_layer2.decoder.tr(9,512)                    66048
+ff2.ffn.dec_layer2.decoder.tr(9,128)                    65664
+dropout.ffn.dec_layer2.decode(9,128)                    0
+add.ffn.dec_layer2.decoder.tr(9,128)                    0
+layernorm.ffn.dec_layer2.deco(9,128)                    256
+mha.causalatten.dec_layer3.de(9,128)                    527488
+layernorm.causalatten.dec_lay(9,128)                    256
+add.causalatten.dec_layer3.de(9,128)                    0
+mha.crossAttn.dec_layer3.deco(9,128)                    527488
+layernorm.crossAttn.dec_layer(9,128)                    256
+add.crossAttn.dec_layer3.deco(9,128)                    0
+ff1.ffn.dec_layer3.decoder.tr(9,512)                    66048
+ff2.ffn.dec_layer3.decoder.tr(9,128)                    65664
+dropout.ffn.dec_layer3.decode(9,128)                    0
+add.ffn.dec_layer3.decoder.tr(9,128)                    0
+layernorm.ffn.dec_layer3.deco(9,128)                    256
+final_layer.transformer(Dense(9,1024)                   132096
+==================================================================
+Total params: 7782912
+Train model...
+Train on 19800 samples
+Epoch 1/10 [.........................] 785 sec. remaining:00:00  - 785 sec.
+ loss:4.7450 accuracy:0.3357
+Epoch 2/10 [.........................] 777 sec. remaining:00:00  - 777 sec.
+ loss:2.7992 accuracy:0.5753
+Epoch 3/10 [.........................] 775 sec. remaining:00:00  - 775 sec.
+ loss:2.1355 accuracy:0.6393
+Epoch 4/10 [.........................] 774 sec. remaining:00:00  - 774 sec.
+ loss:1.7406 accuracy:0.6860
+Epoch 5/10 [.........................] 776 sec. remaining:00:00  - 776 sec.
+ loss:1.4586 accuracy:0.7196
+Epoch 6/10 [.........................] 772 sec. remaining:00:00  - 772 sec.
+ loss:1.2562 accuracy:0.7475
+Epoch 7/10 [.........................] 782 sec. remaining:00:00  - 782 sec.
+ loss:1.1175 accuracy:0.7666
+Epoch 8/10 [.........................] 782 sec. remaining:00:00  - 782 sec.
+ loss:1.0198 accuracy:0.7793
+Epoch 9/10 [.........................] 775 sec. remaining:00:00  - 775 sec.
+ loss:0.9702 accuracy:0.7826
+Epoch 10/10 [.........................] 770 sec. remaining:00:00  - 770 sec.
+ loss:0.9257 accuracy:0.7889
+trainableVariables=172
+Variables=174
+Total training time: 02:09:28
+Input:   <start> elles ont la . <end>
+Predict: <start> they re jittery . <end>
+Target:  <start> they re scared . <end>
+
+Input:   <start> c est . <end>
+Predict: <start> it s . <end>
+Target:  <start> it s . <end>
+
+Input:   <start> je l ai . <end>
+Predict: <start> i it . <end>
+Target:  <start> i it . <end>
+
+Input:   <start> reste en arrière ! <end>
+Predict: <start> stay back . <end>
+Target:  <start> stay back . <end>
+
+Input:   <start> tout le monde est là . <end>
+Predict: <start> everyone is there . <end>
+Target:  <start> everyone is here . <end>
+
+Input:   <start> quelle heure est il maintenant ? <end>
+Predict: <start> what time is it ? <end>
+Target:  <start> what time is it ? <end>
+
+Input:   <start> restez . <end>
+Predict: <start> stay focused . <end>
+Target:  <start> stay seated . <end>
+
+Input:   <start> quelle équipe a ? <end>
+Predict: <start> what has was it team ? <end>
+Target:  <start> which team won ? <end>
+
+Input:   <start> ça semble facile . <end>
+Predict: <start> it sounds easy . <end>
+Target:  <start> it seems easy . <end>
+
+Input:   <start> nous y voici . <end>
+Predict: <start> we here . <end>
+Target:  <start> here we are . <end>
+
