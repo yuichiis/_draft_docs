@@ -6,7 +6,7 @@ previous_section: tutorials/neural-machine-translation-with-attention
 ---
 このチュートリアルでは、PHPでトランスフォーマーモデルを使用して、フランス語から英語への変換モデルを構築します。
 
-トランスフォーマーモデルについて
+トランスフォーマーモデルとは
 -----------------------------
 
 トランスフォーマーは、アテンションメカニズムを利用した翻訳モデルです。
@@ -79,9 +79,9 @@ Transformerモデルは、エンコーダーとデコーダーから構成され
 ### ブロックの構造
 各ブロックは、Multi-Head Attention、Feed Forward Network、Add & Layer Normalizationから構成されます。
 
-Multi-Head Attentionは、入力情報の中で、どの情報に注目すべきかを判断し、処理する仕組みです。
-Feed Forward Networkは、通常のニューラルネットワークで、系列ごとに適用されます。
-Residual Connection(加算処理)とLayer Normalizationを適用することで、学習を安定化・高速化します。
+- **Multi-Head Attention**: 入力情報の中で、どの情報に注目すべきかを判断し、処理する仕組みです。
+- **Feed Forward Network**: 通常のニューラルネットワークで、系列ごとに適用されます。
+- **Residual Connection(加算処理)とLayer Normalization**: 学習を安定化・高速化します。
 
 ![トランスフォーマーモデル](images/neural-machine-translation-transformer.png)
 
@@ -197,6 +197,140 @@ Multi-Head Attentionの後に、フィードフォワードネットワークが
 ここにスケジューラーとトレーニングのコードが入る
 ```
 
+```
+Generating data...
+num_examples: 20000
+num_words:
+epoch: 10
+batchSize: 64
+embedding_dim: 256
+num_heads: 8
+dff: 512
+num_layers: 4
+Total questions: 20000
+Input  word dictionary: 6814(6814)
+Target word dictionary: 3294(3294)
+Input length: 17
+Output length: 9
+device type: GPU
+Compile model...
+Layer(type)                  Output Shape               Param #
+==================================================================
+embedding.posemb.encoder.tran(17,256)                   1744384
+mask.posemb.encoder.transform(17,256)                   0
+mha.globalattn.enc_layer0.enc(17,256)                   2103552
+layernorm.globalattn.enc_laye(17,256)                   512
+add.globalattn.enc_layer0.enc(17,256)                   0
+ff1.ffn.enc_layer0.encoder.tr(17,512)                   131584
+ff2.ffn.enc_layer0.encoder.tr(17,256)                   131328
+dropout.ffn.enc_layer0.encode(17,256)                   0
+add.ffn.enc_layer0.encoder.tr(17,256)                   0
+layernorm.ffn.enc_layer0.enco(17,256)                   512
+mha.globalattn.enc_layer1.enc(17,256)                   2103552
+layernorm.globalattn.enc_laye(17,256)                   512
+add.globalattn.enc_layer1.enc(17,256)                   0
+ff1.ffn.enc_layer1.encoder.tr(17,512)                   131584
+ff2.ffn.enc_layer1.encoder.tr(17,256)                   131328
+dropout.ffn.enc_layer1.encode(17,256)                   0
+add.ffn.enc_layer1.encoder.tr(17,256)                   0
+layernorm.ffn.enc_layer1.enco(17,256)                   512
+mha.globalattn.enc_layer2.enc(17,256)                   2103552
+layernorm.globalattn.enc_laye(17,256)                   512
+add.globalattn.enc_layer2.enc(17,256)                   0
+ff1.ffn.enc_layer2.encoder.tr(17,512)                   131584
+ff2.ffn.enc_layer2.encoder.tr(17,256)                   131328
+dropout.ffn.enc_layer2.encode(17,256)                   0
+add.ffn.enc_layer2.encoder.tr(17,256)                   0
+layernorm.ffn.enc_layer2.enco(17,256)                   512
+mha.globalattn.enc_layer3.enc(17,256)                   2103552
+layernorm.globalattn.enc_laye(17,256)                   512
+add.globalattn.enc_layer3.enc(17,256)                   0
+ff1.ffn.enc_layer3.encoder.tr(17,512)                   131584
+ff2.ffn.enc_layer3.encoder.tr(17,256)                   131328
+dropout.ffn.enc_layer3.encode(17,256)                   0
+add.ffn.enc_layer3.encoder.tr(17,256)                   0
+layernorm.ffn.enc_layer3.enco(17,256)                   512
+dropout.encoder.transformer(D(17,256)                   0
+embedding.posemb.decoder.tran(9,256)                    843264
+mask.posemb.decoder.transform(9,256)                    0
+dropout.decoder.transformer(D(9,256)                    0
+mha.causalatten.dec_layer0.de(9,256)                    2103552
+layernorm.causalatten.dec_lay(9,256)                    512
+add.causalatten.dec_layer0.de(9,256)                    0
+mha.crossAttn.dec_layer0.deco(9,256)                    2103552
+layernorm.crossAttn.dec_layer(9,256)                    512
+add.crossAttn.dec_layer0.deco(9,256)                    0
+ff1.ffn.dec_layer0.decoder.tr(9,512)                    131584
+ff2.ffn.dec_layer0.decoder.tr(9,256)                    131328
+dropout.ffn.dec_layer0.decode(9,256)                    0
+add.ffn.dec_layer0.decoder.tr(9,256)                    0
+layernorm.ffn.dec_layer0.deco(9,256)                    512
+mha.causalatten.dec_layer1.de(9,256)                    2103552
+layernorm.causalatten.dec_lay(9,256)                    512
+add.causalatten.dec_layer1.de(9,256)                    0
+mha.crossAttn.dec_layer1.deco(9,256)                    2103552
+layernorm.crossAttn.dec_layer(9,256)                    512
+add.crossAttn.dec_layer1.deco(9,256)                    0
+ff1.ffn.dec_layer1.decoder.tr(9,512)                    131584
+ff2.ffn.dec_layer1.decoder.tr(9,256)                    131328
+dropout.ffn.dec_layer1.decode(9,256)                    0
+add.ffn.dec_layer1.decoder.tr(9,256)                    0
+layernorm.ffn.dec_layer1.deco(9,256)                    512
+mha.causalatten.dec_layer2.de(9,256)                    2103552
+layernorm.causalatten.dec_lay(9,256)                    512
+add.causalatten.dec_layer2.de(9,256)                    0
+mha.crossAttn.dec_layer2.deco(9,256)                    2103552
+layernorm.crossAttn.dec_layer(9,256)                    512
+add.crossAttn.dec_layer2.deco(9,256)                    0
+ff1.ffn.dec_layer2.decoder.tr(9,512)                    131584
+ff2.ffn.dec_layer2.decoder.tr(9,256)                    131328
+dropout.ffn.dec_layer2.decode(9,256)                    0
+add.ffn.dec_layer2.decoder.tr(9,256)                    0
+layernorm.ffn.dec_layer2.deco(9,256)                    512
+mha.causalatten.dec_layer3.de(9,256)                    2103552
+layernorm.causalatten.dec_lay(9,256)                    512
+add.causalatten.dec_layer3.de(9,256)                    0
+mha.crossAttn.dec_layer3.deco(9,256)                    2103552
+layernorm.crossAttn.dec_layer(9,256)                    512
+add.crossAttn.dec_layer3.deco(9,256)                    0
+ff1.ffn.dec_layer3.decoder.tr(9,512)                    131584
+ff2.ffn.dec_layer3.decoder.tr(9,256)                    131328
+dropout.ffn.dec_layer3.decode(9,256)                    0
+add.ffn.dec_layer3.decoder.tr(9,256)                    0
+layernorm.ffn.dec_layer3.deco(9,256)                    512
+final_layer.transformer(Dense(9,3294)                   846558
+==================================================================
+Total params: 30790366
+Train model...
+Train on 19800 samples
+Epoch 1/10 [.........................] 1805 sec. remaining:00:00  - 1805 sec.
+ loss:5.2529 accuracy:0.3671
+Epoch 2/10 [.........................] 1800 sec. remaining:00:00  - 1800 sec.
+ loss:2.8989 accuracy:0.5796
+Epoch 3/10 [.........................] 1806 sec. remaining:00:00  - 1806 sec.
+ loss:2.2105 accuracy:0.6482
+Epoch 4/10 [.........................] 1812 sec. remaining:00:00  - 1812 sec.
+ loss:1.8078 accuracy:0.6910
+Epoch 5/10 [.........................] 1841 sec. remaining:00:00  - 1841 sec.
+ loss:1.5020 accuracy:0.7273
+Epoch 6/10 [.........................] 1859 sec. remaining:00:00  - 1859 sec.
+ loss:1.2711 accuracy:0.7578
+Epoch 7/10 [.........................] 1884 sec. remaining:00:00  - 1884 sec.
+ loss:1.0935 accuracy:0.7803
+Epoch 8/10 [.........................] 1817 sec. remaining:00:00  - 1817 sec.
+ loss:0.9837 accuracy:0.7957
+Epoch 9/10 [.........................] 1754 sec. remaining:00:00  - 1754 sec.
+ loss:0.9184 accuracy:0.8023
+Epoch 10/10 [.........................] 1653 sec. remaining:00:00  - 1653 sec.
+ loss:0.8757 accuracy:0.8069
+trainableVariables=172
+Variables=174
+Total training time: 05:00:31
+```
+
+![トレーニング履歴](images/transformer/transformer-training.png)
+
+
 ### 予測
 学習済みモデルで機械翻訳を行いましょう。
 
@@ -216,3 +350,44 @@ Multi-Head Attentionの後に、フィードフォワードネットワークが
 ここにトランスレーターの実行のコードが入る
 ```
 
+```
+Input:   <start> j adore les chameaux . <end>
+Predict: <start> i love camels . <end>
+Target:  <start> i love camels . <end>
+
+Input:   <start> j’ai de la fièvre . <end>
+Predict: <start> i have a fever . <end>
+Target:  <start> i have a fever . <end>
+
+Input:   <start> es tu perdue ? <end>
+Predict: <start> are you lost ? <end>
+Target:  <start> are you lost ? <end>
+
+Input:   <start> ne me charrie pas ! <end>
+Predict: <start> don t kid away . <end>
+Target:  <start> don t kid me ! <end>
+
+Input:   <start> il est malade . <end>
+Predict: <start> he is ill . <end>
+Target:  <start> he is ill . <end>
+
+Input:   <start> ils partirent tôt . <end>
+Predict: <start> they left early . <end>
+Target:  <start> they left early . <end>
+
+Input:   <start> où est ma voiture  ? <end>
+Predict: <start> where is my car ? <end>
+Target:  <start> where is my car ? <end>
+
+Input:   <start> traduis le . <end>
+Predict: <start> let it it it . <end>
+Target:  <start> translate it . <end>
+
+Input:   <start> tom a changé . <end>
+Predict: <start> tom has changed . <end>
+Target:  <start> tom changed . <end>
+
+Input:   <start> sois très prudente ! <end>
+Predict: <start> be very careful . <end>
+Target:  <start> be very careful . <end>
+```
