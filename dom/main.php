@@ -6,7 +6,7 @@ abstract class EventTarget
     public function addEventListener(
         string $type,
         callable $listener,
-        bool|array $options=null)
+        bool|array|null $options=null)
     {
         $set = ['listener'=>$listener,'options'=>$options];
         if(isset($this->listeners[$type])) {
@@ -28,7 +28,7 @@ abstract class Node extends EventTarget
 
     public function __construct(
         public ?Node $parent = null,
-        string $fixedId = null,
+        ?string $fixedId = null,
         ) {
         $this->_id = $fixedId;
     }
@@ -80,7 +80,7 @@ class Element extends Node
     public function __construct(
         public string $type,
         ?Node $parent = null,
-        string $fixedId = null,
+        ?string $fixedId = null,
         ) {
         parent::__construct($parent,$fixedId);
     }
@@ -96,7 +96,7 @@ class TextNode extends Node
     public function __construct(
         public string $text,
         public ?Node $parent = null,
-        string $fixedId = null,
+        ?string $fixedId = null,
         ) {
         parent::__construct($parent,$fixedId);
     }
