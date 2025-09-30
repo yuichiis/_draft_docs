@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>リアルタイムコマンド実行</title>
+    <style>
+        body { font-family: sans-serif; }
+        #output {
+            background-color: #222;
+            color: #eee;
+            padding: 1em;
+            border-radius: 5px;
+            white-space: pre-wrap; /* 改行をそのまま表示 */
+            word-wrap: break-word; /* 長い行を折り返す */
+            min-height: 200px;
+        }
+    </style>
+</head>
+<body>
+    <h1>リアルタイムコマンド実行</h1>
+    <button id="execButton">コマンド実行</button>
+    <h2>実行結果:</h2>
+    <pre id="output"></pre>
+
+    <script>
+        const execButton = document.getElementById('execButton');
+        const outputArea = document.getElementById('output');
+
+        execButton.addEventListener('click', async () => {
+            // 前回の結果をクリア
+            outputArea.textContent = '';
+            execButton.disabled = true;
+            outputArea.textContent = 'コマンド実行を開始します...\n';
+
+            try {
+                // 1. コマンド実行をリクエスト
+                const response = await fetch('/execute', { method: 'POST' });
+                const data = await response.json();
+                const taskId = data.task_id;
+
+                if (!taskId) {
+                    outputArea.textContent = 'タスクIDの取得に失敗しました。';
+                    return;
+                }
+
+                // 2. SSEで結果のストリーミングを開始
+                const eventSource = new EventSource(`/stream/${taskId}`);
+
+                // サーバーからメッセージが送られてくるたびに呼ばれる
+                eventSource.onmessage = (event) => {
+                    outputArea.textContent += event.data + '\n';
+                    // 自動でスクロール
+                    outputArea.scrollTop = outputArea.scrollHeight;
+                };
+
+                // エラーが発生したときに呼ばれる
+                eventSource.onerror = (err) => {
+                    console.error("EventSource failed:", err);
+                    outputArea.textContent += 'ストリーム接続が切れました。';
+                    eventSource.close(); // エラーが起きたら接続を閉じる
+                    execButton.disabled = false;
+                };
+
+            } catch (error) {
+                console.error('Error:', error);
+                outputArea.textContent = 'エラーが発生しました: ' + error.message;
+                execButton.disabled = false;
+            }
+        });
+    </script>
+</body>
+</html>
